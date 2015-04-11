@@ -14,8 +14,8 @@ import java.util.Vector;
 public class Test {
     private String Test_name;
     private int Test_charges;
-    public Vector<Stocks> stockReq = new Vector<Stocks>();
-    
+    //public Vector<Stocks> stockReq = new Vector<Stocks>();
+    public String stockReq;
     
     public Test(){
         Test_name = "";
@@ -23,9 +23,10 @@ public class Test {
         //Normal_values = "";
     }
     
-    public Test(String Testname,int Testcharges){
+    public Test(String Testname,int Testcharges,String st){
         Test_name = Testname;
         Test_charges = Testcharges;
+        stockReq = st;
         //Normal_values = Normvalues;
     }
     

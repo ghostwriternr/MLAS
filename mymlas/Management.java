@@ -31,7 +31,7 @@ public class Management {
         Connect.sql = "SELECT * FROM Tests";
         rs = Connect.stmt.executeQuery(Connect.sql);
         while(rs.next()){
-          tests_.addElement(new Test(rs.getString("Test_Name"),rs.getInt("Test_Charges")));
+          tests_.addElement(new Test(rs.getString("Test_Name"),rs.getInt("Test_Charges"),rs.getString("Stocks")));
         }
     }
     
@@ -56,7 +56,7 @@ public class Management {
         serial_temp++;
         Connect.sql = "SELECT * FROM Tests";
         rs = Connect.stmt.executeQuery(Connect.sql);
-        Connect.sql = "INSERT INTO Tests VALUES (" + serial_temp + ",'" + test.get_Testname() + "'," + test.get_Testcharges() + ");";
+        Connect.sql = "INSERT INTO Tests VALUES (" + serial_temp + ",'" + test.get_Testname() + "'," + test.get_Testcharges() + "," + test.stockReq + ");";
         Connect.stmt.executeUpdate(Connect.sql);
         tests_.addElement(new Test(test));
         num_Tests_++;

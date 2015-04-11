@@ -50,7 +50,6 @@ public class mgfunc extends javax.swing.JFrame {
         {
             jPanel1.setVisible(true);
             DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
-            System.out.println("yo");
             for(int i = 0;i < Management_.get_num_tests();i++){
                 tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
             }
@@ -738,8 +737,15 @@ public class mgfunc extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Charges can contain only numbers(0 to 9)!");
         }
         else {
+            String S = "";
+            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+            int nRow = dtm.getRowCount();
+            for (int i = 0 ; i < nRow ; i++)
+            {
+                S=S.concat(dtm.getValueAt(i, 1).toString());
+            }
             Test prev_test = Management_.list_Tests(jComboBox2.getSelectedIndex());
-            Test new_test  = new Test(prev_test.get_Testname(),Integer.parseInt(jTextField4.getText()));
+            Test new_test  = new Test(prev_test.get_Testname(),Integer.parseInt(jTextField4.getText()),S);
             try {
                 if(Management_.edit_Test(prev_test, new_test)){
                     jTextField4.setText("");
@@ -763,7 +769,14 @@ public class mgfunc extends javax.swing.JFrame {
             }
             else if(jTextField2.getText().matches("[0-9]*")){
                 try {
-                    Test test_temp = new Test(jTextField1.getText(),Integer.parseInt(jTextField2.getText()));  
+                    String S = "";
+                    DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+                    int nRow = dtm.getRowCount();
+                    for (int i = 0 ; i < nRow ; i++)
+                    {
+                        S=S.concat(dtm.getValueAt(i, 1).toString());
+                    }
+                    Test test_temp = new Test(jTextField1.getText(),Integer.parseInt(jTextField2.getText()),S);  
                     if(Management_.add_Test(test_temp)){
                         JOptionPane.showMessageDialog(null,"The test has been successfully added!!");
                     }

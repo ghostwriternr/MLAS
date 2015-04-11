@@ -93,9 +93,9 @@ public class empfunc extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -163,10 +163,6 @@ public class empfunc extends javax.swing.JFrame {
         jPanel1.add(jTextField2);
         jTextField2.setBounds(290, 340, 290, 40);
 
-        jTextField3.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jPanel1.add(jTextField3);
-        jTextField3.setBounds(290, 400, 290, 40);
-
         jButton1.setText("Add Patient");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,6 +180,10 @@ public class empfunc extends javax.swing.JFrame {
         });
         jPanel1.add(jButton2);
         jButton2.setBounds(690, 450, 250, 30);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Male", "Female", "Other" }));
+        jPanel1.add(jComboBox1);
+        jComboBox1.setBounds(290, 400, 290, 40);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(null);
@@ -434,6 +434,7 @@ public class empfunc extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -460,6 +461,5 @@ public class empfunc extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

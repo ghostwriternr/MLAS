@@ -11,6 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -33,12 +38,19 @@ public class Patient_home extends javax.swing.JFrame {
     
     int chn;
     
-    public Patient_home() {
+    public Patient_home() throws SQLException {
+        this.Management_ = new Management();
         initComponents();
         jPanel3.setVisible(false);
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
         jPanel6.setVisible(false);
+        DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
+            for(int i = 0;i < Management_.get_num_tests();i++)
+            {    
+                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
+                jComboBox1.addItem(Management_.list_Tests(i).get_Testname());
+            }
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -144,13 +156,17 @@ public class Patient_home extends javax.swing.JFrame {
         });
     }
     
-    public Patient_home(int ch) {
+    public Patient_home(int ch) throws SQLException {
+        this.Management_ = new Management();
         initComponents();
         chn = ch;
         jPanel3.setVisible(false);
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
         jPanel6.setVisible(false);
+        DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
+            for(int i = 0;i < Management_.get_num_tests();i++)
+                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -423,7 +439,6 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel3.add(jLabel11);
         jLabel11.setBounds(520, 80, 410, 40);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel3.add(jComboBox1);
         jComboBox1.setBounds(520, 130, 420, 40);
 
@@ -700,9 +715,46 @@ public class Patient_home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Bill_Page bl = new Bill_Page(1);
+        /*Bill_Page bl = new Bill_Page(1);
         bl.setVisible(true);
-        this.setVisible(false);
+        this.setVisible(false);*/
+        if(String.valueOf(jComboBox1.getSelectedItem()).equals("None")){
+            JOptionPane.showMessageDialog(null,"Select a valid Test and then press Take Test.\n");
+        }
+        else {
+            JOptionPane.showMessageDialog(null,"Thank You For taking the Test!!\nYou will receive the bill shortly.\n");
+            try {
+              Connect.create_Connection(); 
+              Connect.sql = "SELECT * FROM notifications";
+              ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+              int nserial = 0;
+              while(rs.next()){
+                  nserial = rs.getInt("id");
+              }
+              nserial++;
+              Connect.sql = "SELECT * FROM bills";
+              int bserial = 0;
+              while(rs.next()){
+                  bserial = rs.getInt("id");
+              }
+              bserial++;
+              //Calendar cal = Calendar.getInstance();
+              Connect.sql = "INSERT INTO notifications VALUES (" + nserial + "," + bserial + ",0);";
+              Connect.stmt.executeUpdate(Connect.sql);
+              Connect.stmt.close();
+              /*int indx = 0;
+              DefaultTableModel tm = (DefaultTableModel) Table.getModel();
+              for (int i = 0; i < tm.getRowCount(); i++){
+                if (tm.getValueAt(i,1).equals(String.valueOf(Select_Test1.getSelectedItem()))){
+                    indx = i;
+                }
+              }
+              tm.setValueAt(true,indx,3);*/
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -735,11 +787,16 @@ public class Patient_home extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Patient_home().setVisible(true);
+                try {
+                    new Patient_home().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
+    public Management Management_;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
@@ -788,82 +845,4 @@ public class Patient_home extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
-}
-
-abstract class ButtonRenderer extends JButton implements TableCellRenderer {
-
-  public ButtonRenderer() {
-    setOpaque(true);
-  }
-
-  public Component getTableCellRendererComponent(JTable table, Object value,
-      boolean isSelected, boolean hasFocus, int row, int column) {
-    if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
-    } else {
-      setForeground(table.getForeground());
-      setBackground(UIManager.getColor("Button.background"));
-    }
-    setText((value == null) ? "" : value.toString());
-    return this;
-  }
-}
-
-/**
- * @version 1.0 11/09/98
- */
-
-class ButtonEditor extends DefaultCellEditor {
-  protected JButton button;
-
-  private String label;
-
-  private boolean isPushed;
-
-  public ButtonEditor(JCheckBox checkBox) {
-    super(checkBox);
-    button = new JButton();
-    button.setOpaque(true);
-    button.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        fireEditingStopped();
-      }
-    });
-  }
-
-  public Component getTableCellEditorComponent(JTable table, Object value,
-      boolean isSelected, int row, int column) {
-    if (isSelected) {
-      button.setForeground(table.getSelectionForeground());
-      button.setBackground(table.getSelectionBackground());
-    } else {
-      button.setForeground(table.getForeground());
-      button.setBackground(table.getBackground());
-    }
-    label = (value == null) ? "" : value.toString();
-    button.setText(label);
-    isPushed = true;
-    return button;
-  }
-
-  public Object getCellEditorValue() {
-    if (isPushed) {
-      // 
-      // 
-      JOptionPane.showMessageDialog(button, label + ": Ouch!");
-      // System.out.println(label + ": Ouch!");
-    }
-    isPushed = false;
-    return new String(label);
-  }
-
-  public boolean stopCellEditing() {
-    isPushed = false;
-    return super.stopCellEditing();
-  }
-
-  protected void fireEditingStopped() {
-    super.fireEditingStopped();
-  }
 }
