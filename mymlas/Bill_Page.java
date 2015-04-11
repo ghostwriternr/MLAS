@@ -5,7 +5,9 @@
  */
 package mymlas;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,14 +22,31 @@ public class Bill_Page extends javax.swing.JFrame {
      */
     
     int chn = 0;
+    String bd;
+    String p;
     
     public Bill_Page() {
         initComponents();
     }
     
-    public Bill_Page(int ch) {
+    public Bill_Page(int ch,String bid) throws SQLException {
         initComponents();
         chn = ch;
+        bd = bid;
+        Connect.create_Connection(); 
+        Connect.sql = "SELECT * FROM bills WHERE id="+ bd +";";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        p = rs.getString("Patient_Name");
+        jTextField1.setText(""+bd);
+        jTextField2.setText(""+rs.getString("Patient_Name"));
+        jTextField4.setText(""+rs.getString("Test_Name"));
+        Connect.sql = "SELECT * FROM tests WHERE Test_Name="+ rs.getString("Test_Name") +";";
+        rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        jTextField5.setText(""+rs.getInt("TestCharges"));
+        if (ch==2)
+            jButton1.setText("Confirm");
     }
 
     /**
@@ -55,10 +74,23 @@ public class Bill_Page extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        jComboBox2 = new javax.swing.JComboBox();
+        jComboBox3 = new javax.swing.JComboBox();
+        jComboBox4 = new javax.swing.JComboBox();
+        jComboBox5 = new javax.swing.JComboBox();
+        jComboBox6 = new javax.swing.JComboBox();
+        jComboBox7 = new javax.swing.JComboBox();
+        jComboBox8 = new javax.swing.JComboBox();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -154,23 +186,6 @@ public class Bill_Page extends javax.swing.JFrame {
         jPanel1.add(jTextField5);
         jTextField5.setBounds(660, 270, 270, 30);
 
-        jTextField6.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jPanel1.add(jTextField6);
-        jTextField6.setBounds(360, 340, 270, 30);
-
-        jTextField7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField7);
-        jTextField7.setBounds(360, 380, 270, 30);
-
-        jTextField8.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jPanel1.add(jTextField8);
-        jTextField8.setBounds(360, 420, 270, 30);
-
         jButton1.setText("Go Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,6 +194,86 @@ public class Bill_Page extends javax.swing.JFrame {
         });
         jPanel1.add(jButton1);
         jButton1.setBounds(729, 495, 220, 30);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", " " }));
+        jPanel1.add(jComboBox1);
+        jComboBox1.setBounds(330, 350, 55, 22);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        jPanel1.add(jComboBox2);
+        jComboBox2.setBounds(440, 350, 41, 22);
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jPanel1.add(jComboBox3);
+        jComboBox3.setBounds(550, 350, 41, 22);
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025" }));
+        jPanel1.add(jComboBox4);
+        jComboBox4.setBounds(330, 390, 55, 22);
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        jPanel1.add(jComboBox5);
+        jComboBox5.setBounds(440, 390, 41, 22);
+
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jPanel1.add(jComboBox6);
+        jComboBox6.setBounds(550, 390, 41, 22);
+
+        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        jPanel1.add(jComboBox7);
+        jComboBox7.setBounds(330, 430, 41, 22);
+
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "10", "20", "30", "40", "50" }));
+        jPanel1.add(jComboBox8);
+        jComboBox8.setBounds(440, 430, 41, 22);
+
+        jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("HH");
+        jPanel1.add(jLabel12);
+        jLabel12.setBounds(380, 430, 40, 20);
+
+        jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("MM");
+        jPanel1.add(jLabel13);
+        jLabel13.setBounds(490, 430, 40, 20);
+
+        jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("YYYY");
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(390, 390, 40, 20);
+
+        jLabel15.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("MM");
+        jPanel1.add(jLabel15);
+        jLabel15.setBounds(490, 390, 40, 20);
+
+        jLabel16.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("DD");
+        jPanel1.add(jLabel16);
+        jLabel16.setBounds(600, 390, 40, 20);
+
+        jLabel17.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("DD");
+        jPanel1.add(jLabel17);
+        jLabel17.setBounds(600, 350, 40, 20);
+
+        jLabel18.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setText("MM");
+        jPanel1.add(jLabel18);
+        jLabel18.setBounds(490, 350, 40, 20);
+
+        jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setText("YYYY");
+        jPanel1.add(jLabel19);
+        jLabel19.setBounds(390, 350, 40, 20);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mymlas/humanidad_web_blur.png"))); // NOI18N
@@ -222,30 +317,42 @@ public class Bill_Page extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (chn==1){
-            Patient_home phm = new Patient_home();
+            Patient_home phm = null;
+            try {
+                phm = new Patient_home(p);
+            } catch (SQLException ex) {
+                Logger.getLogger(Bill_Page.class.getName()).log(Level.SEVERE, null, ex);
+            }
             phm.setVisible(true);
             this.setVisible(false);
         }
         else if (chn==2)
         {
-           Management_home mh = null;
             try {
-                mh = new Management_home();
+                Connect.create_Connection();
+                Connect.sql = "INSERT INTO bills (Doctor_Name,Test_Date,Collection_date,Status) VALUES ('"+ jTextField3.getText() +"','"+ jComboBox1.getSelectedItem().toString() + "-" + jComboBox2.getSelectedItem().toString() + "-" + jComboBox3.getSelectedItem().toString() + " 00:00:01','" + jComboBox4.getSelectedItem().toString() + "-" + jComboBox5.getSelectedItem().toString() + "-" + jComboBox6.getSelectedItem().toString() + " " + jComboBox7.getSelectedItem().toString() + ":" + jComboBox2.getSelectedItem().toString() + ":00',1);";
+                Connect.stmt.executeUpdate(Connect.sql);
+                Connect.stmt.close();
+                Connect.sql = "DELETE FROM notifications WHERE bid= '" + bd +";";
+                Connect.stmt.executeUpdate(Connect.sql);
+                Connect.stmt.close();
+                Management_home mh = null;
+                try {
+                    mh = new Management_home();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Bill_Page.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                mh.setVisible(true);
+                this.setVisible(false);
             } catch (SQLException ex) {
                 Logger.getLogger(Bill_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
-           mh.setVisible(true);
-           this.setVisible(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -287,9 +394,25 @@ public class Bill_Page extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JComboBox jComboBox5;
+    private javax.swing.JComboBox jComboBox6;
+    private javax.swing.JComboBox jComboBox7;
+    private javax.swing.JComboBox jComboBox8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -305,8 +428,5 @@ public class Bill_Page extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 }

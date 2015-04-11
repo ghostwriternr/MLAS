@@ -62,6 +62,9 @@ public class mgfunc extends javax.swing.JFrame {
         else if (optn==3)
         {
             jPanel3.setVisible(true);
+            DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
+            for(int i = 0;i < Management_.get_num_tests();i++)
+                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
             for(int i = 0;i < Management_.get_num_tests();i++){
                 jComboBox1.addItem((Management_.list_Tests(i)).get_Testname());
             }
@@ -704,18 +707,24 @@ public class mgfunc extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         try {
-          Management_.remove_Test(Management_.list_Tests(Test_to_remove));
+          Management_.remove_Test(Test_to_remove);
         }
         catch (SQLException e) {
            e.printStackTrace();
         }
+        DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
+        for(int i = 0;i < Management_.get_num_tests();i++)
+            tm.removeRow(i);
+        for(int i = 0;i < Management_.get_num_tests();i++)
+                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
+        jComboBox1.removeAllItems();
+        for(int i = 0;i < Management_.get_num_tests();i++)
+                jComboBox1.addItem((Management_.list_Tests(i)).get_Testname());
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {                                              
-        int indx = jComboBox1.getSelectedIndex();
-        if(indx >= 0) {
+        String indx = jComboBox1.getSelectedItem().toString();
             Test_to_remove = indx;
-        }
     }
     
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {                                           
@@ -848,7 +857,7 @@ public class mgfunc extends javax.swing.JFrame {
     }
 
     public Management Management_;
-    public int Test_to_remove;
+    public String Test_to_remove;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;

@@ -227,9 +227,9 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Patient_home phm = new Patient_home(3);
+        /*Patient_home phm = new Patient_home(3);
         phm.setVisible(true);
-        this.setVisible(false);
+        this.setVisible(false);*/
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

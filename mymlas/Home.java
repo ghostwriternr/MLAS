@@ -55,10 +55,13 @@ public class Home extends javax.swing.JFrame {
             {
                 jPanel3.setVisible(false);
                 jPanel4.setVisible(true);
+                jLabel8.setVisible(true);
+                jLabel9.setVisible(true);
                 jTextField1.setVisible(true);
                 jTextField2.setVisible(true);
                 jButton2.setVisible(true);
                 jButton4.setVisible(true);
+                jButton5.setVisible(false);
                 jTextField1.setText("Management");
                 jTextField1.setEditable(false);
             }  
@@ -291,7 +294,7 @@ public class Home extends javax.swing.JFrame {
             try {
               Connect.create_Connection();
               String pn = null;
-              ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+              ResultSet rs;
               Connect.sql = "SELECT * FROM patients WHERE pname='"+ jTextField1.getText() +"';";
               rs = Connect.stmt.executeQuery(Connect.sql);
               while(rs.next()){
@@ -332,7 +335,14 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        empfunc ef = null;
+        try {
+            ef = new empfunc(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(Management_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ef.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

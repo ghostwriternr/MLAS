@@ -878,8 +878,7 @@ public class Patient_home extends javax.swing.JFrame {
               bserial++;
               Connect.sql = "INSERT INTO notifications VALUES (" + nserial + "," + bserial + ",0);";
               Connect.stmt.executeUpdate(Connect.sql);
-              Connect.stmt.close();
-              Connect.sql = "INSERT INTO bills (id,Patient_Name,Test_Name,Status) VALUES (" + bserial + "'," + jLabel27.getText() + "','"+ jComboBox1.getSelectedItem().toString() +"',0);";
+              Connect.sql = "INSERT INTO bills (id,Patient_Name,Test_Name,Status) VALUES (" + bserial + ",'" + jLabel27.getText() + "','"+ jComboBox1.getSelectedItem().toString() +"',0);";
               Connect.stmt.executeUpdate(Connect.sql);
               Connect.stmt.close();
               /*int indx = 0;

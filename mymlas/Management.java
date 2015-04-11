@@ -56,20 +56,24 @@ public class Management {
         serial_temp++;
         Connect.sql = "SELECT * FROM Tests";
         rs = Connect.stmt.executeQuery(Connect.sql);
-        Connect.sql = "INSERT INTO Tests VALUES (" + serial_temp + ",'" + test.get_Testname() + "'," + test.get_Testcharges() + "," + test.stockReq + ");";
+        Connect.sql = "INSERT INTO Tests VALUES (" + serial_temp + ",'" + test.get_Testname() + "'," + test.get_Testcharges() + ",'" + test.stockReq + "');";
         Connect.stmt.executeUpdate(Connect.sql);
         tests_.addElement(new Test(test));
         num_Tests_++;
         return true;
     }
 
-    public void remove_Test(Test test) throws SQLException{
+    public void remove_Test(String test) throws SQLException{
         Connect.create_Connection();      
-        Connect.sql = "DELETE FROM Tests WHERE Test_Name = '" + test.get_Testname() + "';";
+        Connect.sql = "DELETE FROM Tests WHERE Test_Name= '" + test + "';";
         Connect.stmt.executeUpdate(Connect.sql);
         Connect.stmt.close();
-        tests_.removeElement(test);
+        //tests_.removeElement(test);
+        for (Test tests_1 : tests_) {
+            if (tests_1.get_Testname().equals(test))
+                tests_.remove(tests_1);
         num_Tests_--;
+        }
     }
    
     
