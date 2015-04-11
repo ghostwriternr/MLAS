@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +33,53 @@ public class Management_home extends javax.swing.JFrame {
     public Management_home() throws SQLException {
         this.ef = new empfunc();
         initComponents();
+        int nserial = 0;
         jPanel3.setVisible(false);
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
+        try {
+              Connect.create_Connection();
+              int cnt=0;
+              ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+              Connect.sql = "SELECT * FROM notifications";
+              rs = Connect.stmt.executeQuery(Connect.sql);
+              while(rs.next()){
+                  cnt++;
+                  //nserial = rs.getInt("id");
+              }
+              if (cnt==0)
+                jLabel23.setText("0 Notifications");
+              else
+              {
+                jLabel23.setText(""+cnt+" Notifications");
+                Connect.sql = "SELECT * FROM notifications";
+                rs = Connect.stmt.executeQuery(Connect.sql);
+                while(rs.next()){
+                    nserial = rs.getInt("id");
+                    if (rs.getInt("Type")==0)
+                    {
+                        jLabel10.setText("Bill Requsted");
+                        int bid = rs.getInt("Bill_id");
+                        ResultSet rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        Connect.sql = "SELECT * FROM bills WHERE id="+bid+";";
+                        rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        String pname = null;
+                        String tname = null;
+                        while(rs1.next()){
+                            pname = rs1.getString("Patient_Name");
+                            break;
+                        }
+                        jLabel27.setText("By "+pname+"");
+                        jLabel28.setText(""+ pname +"has taken "+ tname +" test and has requested billing.");
+                    }
+                    break;
+                }
+                
+              }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -577,8 +622,8 @@ public class Management_home extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
@@ -751,7 +796,6 @@ public class Management_home extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Previous");
-        jButton1.setOpaque(false);
         jPanel5.add(jButton1);
         jButton1.setBounds(20, 80, 450, 25);
 
@@ -760,7 +804,6 @@ public class Management_home extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Next");
         jButton2.setToolTipText("");
-        jButton2.setOpaque(false);
         jPanel5.add(jButton2);
         jButton2.setBounds(490, 80, 450, 29);
 
@@ -768,7 +811,6 @@ public class Management_home extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Take Action");
-        jButton3.setOpaque(false);
         jPanel5.add(jButton3);
         jButton3.setBounds(20, 430, 920, 40);
 
@@ -783,16 +825,14 @@ public class Management_home extends javax.swing.JFrame {
         jLabel28.setText("Lorem ipsum dolor sit amet, dico eruditi adversarium et quo. Cu quo hinc porro aliquam, dictas possim omnesque ad vix.");
         jPanel5.add(jLabel28);
         jLabel28.setBounds(40, 260, 880, 50);
-
-        jTextField1.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("Test Notification");
-        jTextField1.setBorder(null);
-        jTextField1.setOpaque(false);
-        jPanel5.add(jTextField1);
-        jTextField1.setBounds(40, 140, 880, 50);
         jPanel5.add(jSeparator1);
         jSeparator1.setBounds(20, 412, 920, 10);
+
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Test Notification");
+        jPanel5.add(jLabel10);
+        jLabel10.setBounds(40, 140, 880, 50);
 
         jLabel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel5.add(jLabel13);
@@ -901,6 +941,7 @@ public class Management_home extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -932,6 +973,5 @@ public class Management_home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

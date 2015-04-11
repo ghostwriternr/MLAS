@@ -7,9 +7,11 @@ package mymlas;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,6 +34,7 @@ public class Home extends javax.swing.JFrame {
         jTextField2.setVisible(false);
         jButton2.setVisible(false);
         jButton4.setVisible(false);
+        jButton5.setVisible(false);
         jLabel4.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -39,10 +42,12 @@ public class Home extends javax.swing.JFrame {
                 jPanel3.setVisible(false);
                 jPanel4.setVisible(true);
                 jTextField1.setVisible(true);
-                jTextField2.setVisible(true);
+                jLabel8.setText("Patient Name");
+                jLabel9.setVisible(false);
                 jButton2.setVisible(true);
                 jButton4.setVisible(true);
-            }  
+                jButton5.setVisible(true);
+            }
         });
         jLabel5.addMouseListener(new MouseAdapter()  
         {  
@@ -86,6 +91,7 @@ public class Home extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -192,7 +198,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jButton2);
-        jButton2.setBounds(699, 360, 220, 30);
+        jButton2.setBounds(700, 360, 220, 30);
 
         jButton4.setBackground(new java.awt.Color(153, 153, 153));
         jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -205,6 +211,18 @@ public class Home extends javax.swing.JFrame {
         });
         jPanel4.add(jButton4);
         jButton4.setBounds(700, 400, 220, 30);
+
+        jButton5.setBackground(new java.awt.Color(153, 153, 153));
+        jButton5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setText("Register !");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton5);
+        jButton5.setBounds(700, 320, 220, 30);
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mymlas/jamie_blur.jpg"))); // NOI18N
         jPanel4.add(jLabel6);
@@ -256,6 +274,7 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jPanel3.setVisible(false);
+        int fnd = 0;
         if (jTextField1.getText().equals("Management"))
         {
             Management_home mhm = null;
@@ -269,9 +288,36 @@ public class Home extends javax.swing.JFrame {
         }
         else
         {
-            Patient_home phm = new Patient_home();
-            this.setVisible(false);
-            phm.setVisible(true);
+            try {
+              Connect.create_Connection();
+              String pn = null;
+              ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+              Connect.sql = "SELECT * FROM patients WHERE pname='"+ jTextField1.getText() +"';";
+              rs = Connect.stmt.executeQuery(Connect.sql);
+              while(rs.next()){
+                  pn = rs.getString("pname");
+                  fnd=1;
+                  break;
+              }
+              if (fnd==0)
+              {
+                  JOptionPane.showMessageDialog(null,"Patient record doesn't exist\n");
+              }
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
+            Patient_home phm;
+            String pn = jTextField1.getText();
+            if (fnd==1){
+            try {
+                phm = new Patient_home(pn);
+                phm.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -284,6 +330,10 @@ public class Home extends javax.swing.JFrame {
         jPanel4.setVisible(false);
         jPanel1.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,6 +375,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

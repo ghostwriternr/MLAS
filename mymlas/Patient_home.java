@@ -156,6 +156,125 @@ public class Patient_home extends javax.swing.JFrame {
         });
     }
     
+    public Patient_home(String pnames) throws SQLException {
+        this.Management_ = new Management();
+        initComponents();
+        jPanel3.setVisible(false);
+        jPanel4.setVisible(false);
+        jPanel5.setVisible(false);
+        jPanel6.setVisible(false);
+        jLabel27.setText(pnames);
+        DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
+            for(int i = 0;i < Management_.get_num_tests();i++)
+            {    
+                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
+                jComboBox1.addItem(Management_.list_Tests(i).get_Testname());
+            }
+        jLabel1.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                jPanel3.setVisible(false);
+                jPanel4.setVisible(false);
+                jPanel5.setVisible(false);
+                jPanel6.setVisible(false);
+                jLabel2.setForeground(new java.awt.Color(204,204,204));
+                jLabel3.setForeground(new java.awt.Color(204,204,204));
+                jLabel4.setForeground(new java.awt.Color(204,204,204));
+                jLabel5.setForeground(new java.awt.Color(204,204,204));
+                jLabel9.setForeground(new java.awt.Color(204,204,204));
+                jLabel6.setVisible(true);
+                jLabel7.setVisible(true);
+            }  
+        });
+        jLabel2.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                jPanel3.setVisible(false);
+                jPanel4.setVisible(false);
+                jPanel5.setVisible(false);
+                jPanel6.setVisible(false);
+                jLabel2.setForeground(Color.white);
+                jLabel3.setForeground(new java.awt.Color(204,204,204));
+                jLabel4.setForeground(new java.awt.Color(204,204,204));
+                jLabel5.setForeground(new java.awt.Color(204,204,204));
+                jLabel9.setForeground(new java.awt.Color(204,204,204));
+                jLabel6.setVisible(false);
+                jLabel7.setVisible(false);
+                jPanel3.setVisible(true);
+            }  
+        });
+        jLabel3.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                jPanel3.setVisible(false);
+                jPanel4.setVisible(false);
+                jPanel5.setVisible(false);
+                jPanel6.setVisible(false);
+                jLabel3.setForeground(Color.white);
+                jLabel2.setForeground(new java.awt.Color(204,204,204));
+                jLabel4.setForeground(new java.awt.Color(204,204,204));
+                jLabel5.setForeground(new java.awt.Color(204,204,204));
+                jLabel9.setForeground(new java.awt.Color(204,204,204));
+                jLabel6.setVisible(false);
+                jLabel7.setVisible(false);
+                jPanel4.setVisible(true);
+            }  
+        });
+        jLabel4.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                jPanel3.setVisible(false);
+                jPanel4.setVisible(false);
+                jPanel5.setVisible(false);
+                jPanel6.setVisible(false);
+                jLabel4.setForeground(Color.white);
+                jLabel2.setForeground(new java.awt.Color(204,204,204));
+                jLabel3.setForeground(new java.awt.Color(204,204,204));
+                jLabel5.setForeground(new java.awt.Color(204,204,204));
+                jLabel9.setForeground(new java.awt.Color(204,204,204));
+                jLabel6.setVisible(false);
+                jLabel7.setVisible(false);
+                jPanel5.setVisible(true);
+            }  
+        });
+        jLabel5.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                jPanel3.setVisible(false);
+                jPanel4.setVisible(false);
+                jPanel5.setVisible(false);
+                jPanel6.setVisible(false);
+                jLabel5.setForeground(Color.white);
+                jLabel2.setForeground(new java.awt.Color(204,204,204));
+                jLabel3.setForeground(new java.awt.Color(204,204,204));
+                jLabel4.setForeground(new java.awt.Color(204,204,204));
+                jLabel9.setForeground(new java.awt.Color(204,204,204));
+                jLabel6.setVisible(false);
+                jLabel7.setVisible(false);
+                jPanel6.setVisible(true);
+            }  
+        });
+        jLabel9.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                jLabel9.setForeground(Color.white);
+                jLabel2.setForeground(new java.awt.Color(204,204,204));
+                jLabel3.setForeground(new java.awt.Color(204,204,204));
+                jLabel4.setForeground(new java.awt.Color(204,204,204));
+                jLabel5.setForeground(new java.awt.Color(204,204,204));
+                Home hm = new Home();
+                hm.setVisible(true);
+                setVisible(false);
+            }  
+        });
+    }
+    
     public Patient_home(int ch) throws SQLException {
         this.Management_ = new Management();
         initComponents();
@@ -166,7 +285,10 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel6.setVisible(false);
         DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
             for(int i = 0;i < Management_.get_num_tests();i++)
+            {
                 tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
+                jComboBox1.addItem(Management_.list_Tests(i).get_Testname());
+            }
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -298,6 +420,8 @@ public class Patient_home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -358,6 +482,20 @@ public class Patient_home extends javax.swing.JFrame {
         jLabel1.setOpaque(true);
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 960, 50);
+
+        jLabel27.setFont(new java.awt.Font("Century Gothic", 2, 24)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel27.setText("Name");
+        jPanel1.add(jLabel27);
+        jLabel27.setBounds(0, 380, 960, 70);
+
+        jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel28.setText("WELCOME");
+        jPanel1.add(jLabel28);
+        jLabel28.setBounds(0, 350, 960, 70);
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 204, 204));
@@ -738,8 +876,10 @@ public class Patient_home extends javax.swing.JFrame {
                   bserial = rs.getInt("id");
               }
               bserial++;
-              //Calendar cal = Calendar.getInstance();
               Connect.sql = "INSERT INTO notifications VALUES (" + nserial + "," + bserial + ",0);";
+              Connect.stmt.executeUpdate(Connect.sql);
+              Connect.stmt.close();
+              Connect.sql = "INSERT INTO bills (id,Patient_Name,Test_Name,Status) VALUES (" + bserial + "'," + jLabel27.getText() + "','"+ jComboBox1.getSelectedItem().toString() +"',0);";
               Connect.stmt.executeUpdate(Connect.sql);
               Connect.stmt.close();
               /*int indx = 0;
@@ -821,6 +961,8 @@ public class Patient_home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
