@@ -46,17 +46,13 @@ public class empfunc extends javax.swing.JFrame {
         {
             jPanel2.setVisible(true);
             DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
-            boolean flag2 = false;   
-            System.out.println(Management_.get_num_Stocks());
-            for(int i = 0;i < Management_.get_num_Stocks();i++){
-                if(!Management_.check_Stock_Item(Management_.list_Stocks(i))) {
-                    flag2 = true;
-                    //Check_Stocks.addItem(Management_.list_Stocks(i).get_Item_Name());
-                }
-                else {
-                flag2 = false;
-                }
-                tm.addRow(new Object[] {i + 1,(Management_.list_Stocks(i)).get_Item_Name(),(Management_.list_Stocks(i)).get_Quantity(),flag2});
+            tm.setRowCount(0);
+            Connect.create_Connection(); 
+            Connect.sql = "SELECT * FROM stocks;";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next())
+            {
+                tm.addRow(new Object[]{rs.getString("Stock_Name"),rs.getInt("Quantity"),rs.getInt("Threshold")});
             }
         }
         else if (optn==3)
@@ -356,33 +352,54 @@ public class empfunc extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Management_home mghm = new Management_home(1);
+        Management_home mghm = null;
+        try {
+            mghm = new Management_home(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
         mghm.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**

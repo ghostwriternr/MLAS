@@ -13,7 +13,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -45,12 +47,68 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
         jPanel6.setVisible(false);
+        jLabel24.setVisible(false);
+        jLabel25.setVisible(false);
+        jLabel26.setVisible(false);
+        jTextField6.setVisible(false);
+        jTextField7.setVisible(false);
+        jTextField8.setVisible(false);
+        jLabel13.setVisible(false);
+        jTextField1.setText(jLabel27.getText());
         DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
             for(int i = 0;i < Management_.get_num_tests();i++)
             {    
                 tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
                 jComboBox1.addItem(Management_.list_Tests(i).get_Testname());
             }
+        jLabel33.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM bills WHERE Patient_Name='"+ jLabel27.getText() +"';";
+                    ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+                    while(rs.next())
+                    {
+                        Bill_Page bp = new Bill_Page(1,""+rs.getInt("id"));
+                        bp.setVisible(true);
+                        setVisible(false);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }  
+        });
+        jLabel34.addMouseListener(new MouseAdapter()  
+        {  
+            public void mouseClicked(MouseEvent e)  
+            {
+                Vector v = new Vector();
+                try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM bills WHERE Patient_Name='"+ jLabel27.getText() +"';";
+                    ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+                    while(rs.next())
+                    {
+                        v.add(rs.getInt("id"));
+                    }
+                    for (int i=0;i<v.size();i++)
+                    {
+                        Connect.sql = "SELECT * FROM reports WHERE billid="+ v.get(i) +";";
+                        rs = Connect.stmt.executeQuery(Connect.sql);
+                        while(rs.next())
+                        {
+                            Report rp = new Report(1,""+v.get(i));
+                            rp.setVisible(true);
+                            setVisible(false);
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }  
+        });
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -59,6 +117,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(true);
+                jLabel28.setVisible(true);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
                 jLabel4.setForeground(new java.awt.Color(204,204,204));
@@ -76,6 +136,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel2.setForeground(Color.white);
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
                 jLabel4.setForeground(new java.awt.Color(204,204,204));
@@ -94,6 +156,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel3.setForeground(Color.white);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel4.setForeground(new java.awt.Color(204,204,204));
@@ -112,6 +176,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel4.setForeground(Color.white);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
@@ -130,6 +196,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel5.setForeground(Color.white);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
@@ -163,6 +231,13 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
         jPanel6.setVisible(false);
+        jLabel24.setVisible(false);
+        jLabel25.setVisible(false);
+        jLabel26.setVisible(false);
+        jTextField6.setVisible(false);
+        jTextField7.setVisible(false);
+        jTextField8.setVisible(false);
+        jLabel13.setVisible(false);
         jLabel27.setText(pnames);
         DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
             for(int i = 0;i < Management_.get_num_tests();i++)
@@ -178,6 +253,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(true);
+                jLabel28.setVisible(true);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
                 jLabel4.setForeground(new java.awt.Color(204,204,204));
@@ -195,6 +272,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel2.setForeground(Color.white);
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
                 jLabel4.setForeground(new java.awt.Color(204,204,204));
@@ -213,6 +292,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel3.setForeground(Color.white);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel4.setForeground(new java.awt.Color(204,204,204));
@@ -231,6 +312,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel4.setForeground(Color.white);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
@@ -249,6 +332,8 @@ public class Patient_home extends javax.swing.JFrame {
                 jPanel4.setVisible(false);
                 jPanel5.setVisible(false);
                 jPanel6.setVisible(false);
+                jLabel27.setVisible(false);
+                jLabel28.setVisible(false);
                 jLabel5.setForeground(Color.white);
                 jLabel2.setForeground(new java.awt.Color(204,204,204));
                 jLabel3.setForeground(new java.awt.Color(204,204,204));
@@ -420,13 +505,13 @@ public class Patient_home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -440,13 +525,10 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -461,9 +543,17 @@ public class Patient_home extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        jLabel29 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
+        jComboBox3 = new javax.swing.JComboBox();
+        jComboBox4 = new javax.swing.JComboBox();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -482,20 +572,6 @@ public class Patient_home extends javax.swing.JFrame {
         jLabel1.setOpaque(true);
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 960, 50);
-
-        jLabel27.setFont(new java.awt.Font("Century Gothic", 2, 24)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel27.setText("Name");
-        jPanel1.add(jLabel27);
-        jLabel27.setBounds(0, 380, 960, 70);
-
-        jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
-        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel28.setText("WELCOME");
-        jPanel1.add(jLabel28);
-        jLabel28.setBounds(0, 350, 960, 70);
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 204, 204));
@@ -536,6 +612,20 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(0, 426, 960, 70);
 
+        jLabel27.setFont(new java.awt.Font("Century Gothic", 2, 24)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel27.setText("Name");
+        jPanel1.add(jLabel27);
+        jLabel27.setBounds(0, 380, 960, 70);
+
+        jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel28.setText("WELCOME");
+        jPanel1.add(jLabel28);
+        jLabel28.setBounds(0, 350, 960, 70);
+
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mymlas/moss.jpg"))); // NOI18N
         jPanel1.add(jLabel6);
@@ -563,7 +653,7 @@ public class Patient_home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Serial no.", "Test Name", "Test Charges", "Already Taken ?"
+                "Serial no.", "Test Name", "Test Charges"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -611,17 +701,11 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel4.add(jLabel14);
         jLabel14.setBounds(30, 80, 210, 40);
 
-        jLabel15.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Age");
-        jPanel4.add(jLabel15);
-        jLabel15.setBounds(30, 150, 210, 40);
-
         jLabel16.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Gender");
         jPanel4.add(jLabel16);
-        jLabel16.setBounds(30, 220, 210, 40);
+        jLabel16.setBounds(30, 140, 210, 40);
 
         jTextField1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -632,15 +716,6 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel4.add(jTextField1);
         jTextField1.setBounds(280, 80, 220, 40);
 
-        jTextField2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jTextField2);
-        jTextField2.setBounds(280, 150, 220, 40);
-
         jTextField3.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -648,7 +723,7 @@ public class Patient_home extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jTextField3);
-        jTextField3.setBounds(280, 220, 220, 40);
+        jTextField3.setBounds(280, 140, 220, 40);
 
         jLabel17.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
@@ -656,10 +731,6 @@ public class Patient_home extends javax.swing.JFrame {
         jLabel17.setText("Account Details");
         jPanel4.add(jLabel17);
         jLabel17.setBounds(0, 20, 480, 50);
-
-        jButton3.setText("Update");
-        jPanel4.add(jButton3);
-        jButton3.setBounds(749, 385, 200, 40);
 
         jLabel24.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(255, 255, 255));
@@ -760,6 +831,42 @@ public class Patient_home extends javax.swing.JFrame {
         jPanel5.add(jButton5);
         jButton5.setBounds(749, 385, 200, 40);
 
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel29.setText("Today's Date");
+        jPanel5.add(jLabel29);
+        jLabel29.setBounds(30, 220, 210, 40);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", " " }));
+        jPanel5.add(jComboBox2);
+        jComboBox2.setBounds(280, 230, 55, 22);
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        jPanel5.add(jComboBox3);
+        jComboBox3.setBounds(390, 230, 41, 22);
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jPanel5.add(jComboBox4);
+        jComboBox4.setBounds(480, 230, 41, 22);
+
+        jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel30.setText("YYYY");
+        jPanel5.add(jLabel30);
+        jLabel30.setBounds(340, 230, 40, 20);
+
+        jLabel31.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel31.setText("MM");
+        jPanel5.add(jLabel31);
+        jLabel31.setBounds(440, 230, 40, 20);
+
+        jLabel32.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel32.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel32.setText("DD");
+        jPanel5.add(jLabel32);
+        jLabel32.setBounds(530, 230, 40, 20);
+
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mymlas/moss_blur.jpg"))); // NOI18N
         jPanel5.add(jLabel18);
         jLabel18.setBounds(0, 0, 960, 430);
@@ -769,12 +876,21 @@ public class Patient_home extends javax.swing.JFrame {
 
         jPanel6.setLayout(null);
 
-        jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText("Current Status of All Bills");
-        jPanel6.add(jLabel23);
-        jLabel23.setBounds(0, 10, 960, 40);
+        jLabel33.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel33.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel33.setText("Bills");
+        jLabel33.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        jPanel6.add(jLabel33);
+        jLabel33.setBounds(0, 0, 480, 430);
+
+        jLabel34.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel34.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel34.setText("Reports");
+        jLabel34.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        jPanel6.add(jLabel34);
+        jLabel34.setBounds(480, 0, 480, 430);
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mymlas/moss_blur.jpg"))); // NOI18N
         jPanel6.add(jLabel19);
@@ -818,10 +934,6 @@ public class Patient_home extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
@@ -847,52 +959,306 @@ public class Patient_home extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField8ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Report rpt = new Report();
-        rpt.setVisible(true);
-        this.setVisible(false);
+        Connect.create_Connection();
+        ResultSet rs = null;
+        String dts="";
+        dts=dts+(jComboBox2.getSelectedItem().toString())+"-";
+        dts=dts+(jComboBox3.getSelectedItem().toString())+"-";
+        dts=dts+(jComboBox4.getSelectedItem().toString())+" 23:59:00";
+        Connect.sql = "SELECT * FROM bills WHERE id="+jTextField5.getText()+" AND Collection_Date<'"+dts+"';";
+        try {
+            rs = Connect.stmt.executeQuery(Connect.sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int f=0;
+        try {
+            while(rs.next())
+            {
+                f=1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (f==1){
+        try {
+            int nserial=0,bserial=0;
+            Connect.sql = "SELECT * FROM notifications";
+            rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next()){
+                nserial = rs.getInt("id");
+            }   nserial++;
+            Connect.sql = "SELECT * FROM reports";
+            rs = Connect.stmt.executeQuery(Connect.sql);
+            int rserial = 0;
+            while(rs.next()){
+                rserial = rs.getInt("id");
+            }   
+            rserial++;
+            Connect.sql = "INSERT INTO notifications VALUES (" + nserial + "," + rserial + ",1);";
+            Connect.stmt.executeUpdate(Connect.sql);
+            JOptionPane.showMessageDialog(null,"Thank You For your time!!\nYou will receive the report shortly.\n");
+            /*Report rpt = new Report();
+            rpt.setVisible(true);
+            this.setVisible(false);*/
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        else
+            JOptionPane.showMessageDialog(null,"Please come after the given collection date!\n");
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private int checkstocks(String tname,String rem) throws SQLException{
+        Connect.create_Connection(); 
+        Connect.sql = "SELECT * FROM tests WHERE Test_Name='"+tname+"';";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        String str = rs.getString("Stocks");
+        String st = "";
+        int flag = 0,j,i;
+        for(i = 0; rem.charAt(i)!=',' ; i++)
+        {
+                if(rem.charAt(i) == '-')
+                {
+                        flag++;
+                        break;
+                }
+                st = st + rem.charAt(i);
+        }
+
+        Vector<Integer> sto;
+        sto = new Vector<>();
+        sto.add(Integer.parseInt(st));
+        while(flag==0)
+        {
+            st ="";
+                for(i=i+1; rem.charAt(i)!=',' ; i++)
+                {
+                        if(rem.charAt(i) == '-')
+                    {
+                            flag++;
+                            break;
+                    }
+                    st = st + rem.charAt(i);
+                }
+                if(flag==0)
+                    sto.add(Integer.parseInt(st));
+        }
+
+        flag = 0;
+        st = "";
+        for(i = 0; str.charAt(i)!=',' ; i++)
+        {
+                if(str.charAt(i) == '-')
+                {
+                        flag++;
+                        break;
+                }
+                st = st + str.charAt(i);
+        }
+
+        Vector<Integer> sto1;
+        sto1 = new Vector<>();
+        sto1.add(Integer.parseInt(st));
+        while(flag==0)
+        {
+                st = "";
+                for(i=i+1; str.charAt(i)!=',' ; i++)
+                {
+                        if(str.charAt(i) == '-')
+                    {
+                            flag++;
+                            break;
+                    }
+                    st = st + str.charAt(i);
+                    //System.out.println(st);
+                }
+                if(flag==0)
+                    sto1.add(Integer.parseInt(st));
+        }
+
+        
+        
+        flag=0;
+        for(i=0;i<sto.size();i++)
+        {
+            System.out.println(sto.get(i) + " " + sto1.get(i));
+                if(sto.get(i)<sto1.get(i))
+                        flag++;
+        }
+
+        if(flag == 0)
+            return 0;
+        else
+            return -1;
+    }
+    
+    public int deleteStocks(Stocks s) throws SQLException
+    {
+        
+        //////////////////////////
+//        returns
+//                0 : insufficient stocks;
+//                1 : successful;
+//                2 : no such stocks;
+       //////////////////////////
+        
+        Connect.create_Connection();
+        Connect.sql = "SELECT * FROM Stocks WHERE Stock_Name = '" + s.get_Item_Name() + "';";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        int quantity = 0;
+        boolean flag = false,flag2 = false;
+        while(rs.next()){
+            flag2 = true;
+            quantity = rs.getInt("Quantity");
+//            if(quantity + s.get_Quantity() >= rs.getInt("Threshold")){
+//                flag = true;
+//            }
+            quantity = quantity - s.get_Quantity();
+            if(quantity < 0)
+                return 0;
+        }
+//        if(flag == true) {
+//            Connect.sql = "DELETE FROM NotifyStocks WHERE Item_Name = '" + item.get_Item_Name() + "';";
+//            Connect.stmt.executeUpdate(Connect.sql);
+//        }
+        //else 
+        if(flag2 == true) {
+             Connect.sql = "UPDATE Stocks SET Quantity = " + quantity + " WHERE Stock_Name = '" + s.get_Item_Name() + "';";
+             Connect.stmt.executeUpdate(Connect.sql);
+             return 1;
+        }
+//        Connect.sql = "SELECT * FROM Stocks WHERE Item_Name = '" + s.get_Item_Name() + "';";
+//        rs = Connect.stmt.executeQuery(Connect.sql);
+//        while(rs.next()){
+//            quantity = rs.getInt("Quantity") + s.get_Quantity();
+//        }
+//        Connect.sql = "UPDATE Stocks SET Quantity = " + quantity + " WHERE Item_Name = '" + item.get_Item_Name() + "';";
+//        Connect.stmt.executeUpdate(Connect.sql);
+        
+        return 2;
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*Bill_Page bl = new Bill_Page(1);
-        bl.setVisible(true);
-        this.setVisible(false);*/
+        Vector<String> strin = new Vector<>();
+        Connect.create_Connection(); 
+        String rem = "";
+        Connect.sql = "SELECT * FROM stocks";
+        ResultSet rs = null;
+        try {
+            rs = Connect.stmt.executeQuery(Connect.sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            while(rs.next()){
+                strin.add(rs.getString("Stock_Name"));
+                rem = rem.concat(rs.getString("Quantity"));
+                rem = rem.concat("-");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        int nserial = 0;
+        try {
+            while(rs.next()){
+                nserial = rs.getInt("id");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(String.valueOf(jComboBox1.getSelectedItem()).equals("None")){
             JOptionPane.showMessageDialog(null,"Select a valid Test and then press Take Test.\n");
         }
-        else {
-            JOptionPane.showMessageDialog(null,"Thank You For taking the Test!!\nYou will receive the bill shortly.\n");
-            try {
-              Connect.create_Connection(); 
-              Connect.sql = "SELECT * FROM notifications";
-              ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
-              int nserial = 0;
-              while(rs.next()){
-                  nserial = rs.getInt("id");
-              }
-              nserial++;
-              Connect.sql = "SELECT * FROM bills";
-              int bserial = 0;
-              while(rs.next()){
-                  bserial = rs.getInt("id");
-              }
-              bserial++;
-              Connect.sql = "INSERT INTO notifications VALUES (" + nserial + "," + bserial + ",0);";
-              Connect.stmt.executeUpdate(Connect.sql);
-              Connect.sql = "INSERT INTO bills (id,Patient_Name,Test_Name,Status) VALUES (" + bserial + ",'" + jLabel27.getText() + "','"+ jComboBox1.getSelectedItem().toString() +"',0);";
-              Connect.stmt.executeUpdate(Connect.sql);
-              Connect.stmt.close();
-              /*int indx = 0;
-              DefaultTableModel tm = (DefaultTableModel) Table.getModel();
-              for (int i = 0; i < tm.getRowCount(); i++){
-                if (tm.getValueAt(i,1).equals(String.valueOf(Select_Test1.getSelectedItem()))){
-                    indx = i;
+        else try {
+            if (checkstocks(jComboBox1.getSelectedItem().toString(),rem)==-1)
+                JOptionPane.showMessageDialog(null,"Inadequate stocks. Sorry for the inconvenience.\n");
+            else {
+                JOptionPane.showMessageDialog(null,"Thank You For taking the Test!!\nYou will receive the bill shortly.\n");
+                try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM notifications";
+                    rs = Connect.stmt.executeQuery(Connect.sql);
+                    while(rs.next()){
+                        nserial = rs.getInt("id");
+                    }
+                    nserial++;
+                    Connect.sql = "SELECT * FROM bills";
+                    rs = Connect.stmt.executeQuery(Connect.sql);
+                    int bserial = 0;
+                    while(rs.next()){
+                        bserial = rs.getInt("id");
+                    }
+                    bserial++;
+                    Stocks S = new Stocks();
+                    String tname = jComboBox1.getSelectedItem().toString();
+                    Connect.sql = "SELECT * FROM tests WHERE Test_Name='"+tname+"';";
+        rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        String str = rs.getString("Stocks");
+        String st = "";
+        int flag = 0,j,i;
+                    flag = 0;
+        st = "";
+        for(i = 0; str.charAt(i)!=',' ; i++)
+        {
+                if(str.charAt(i) == '-')
+                {
+                        flag++;
+                        break;
                 }
-              }
-              tm.setValueAt(true,indx,3);*/
+                st = st + str.charAt(i);
+        }
+        int in=0;
+        Vector<Integer> sto1;
+        sto1 = new Vector<>();
+        sto1.add(Integer.parseInt(st));
+        S = new Stocks(strin.elementAt(in),Integer.parseInt(st),-1);
+        int k1 = deleteStocks(S);
+        in++;
+        while(flag==0)
+        {
+                st = "";
+                for(i=i+1; str.charAt(i)!=',' ; i++)
+                {
+                        if(str.charAt(i) == '-')
+                    {
+                            flag++;
+                            break;
+                    }
+                    st = st + str.charAt(i);
+                    //System.out.println(st);
+                }
+                if(flag==0)
+                {
+                    sto1.add(Integer.parseInt(st));
+                    S = new Stocks(strin.elementAt(in),Integer.parseInt(st),-1);
+                    k1 = deleteStocks(S);
+                    in++;
+                }
+        }
+                    Connect.sql = "INSERT INTO notifications VALUES (" + nserial + "," + bserial + ",0);";
+                    Connect.stmt.executeUpdate(Connect.sql);
+                    Connect.sql = "INSERT INTO bills (id,Patient_Name,Test_Name,Status) VALUES (" + bserial + ",'" + jLabel27.getText() + "','"+ jComboBox1.getSelectedItem().toString() +"',0);";
+                    Connect.stmt.executeUpdate(Connect.sql);
+                    Connect.stmt.close();
+                    /*int indx = 0;
+                    DefaultTableModel tm = (DefaultTableModel) Table.getModel();
+                    for (int i = 0; i < tm.getRowCount(); i++){
+                    if (tm.getValueAt(i,1).equals(String.valueOf(Select_Test1.getSelectedItem()))){
+                    indx = i;
+                    }
+                    }
+                    tm.setValueAt(true,indx,3);*/
+                }
+                catch(SQLException e){
+                    e.printStackTrace();
+                }
             }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -938,16 +1304,17 @@ public class Patient_home extends javax.swing.JFrame {
     public Management Management_;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -956,13 +1323,18 @@ public class Patient_home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -978,7 +1350,6 @@ public class Patient_home extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;

@@ -67,14 +67,51 @@ public class Management_home extends javax.swing.JFrame {
                         String tname = null;
                         while(rs1.next()){
                             pname = rs1.getString("Patient_Name");
+                            tname = rs1.getString("Test_Name");
                             break;
                         }
                         jLabel27.setText("By "+pname+"");
-                        jLabel28.setText(""+ pname +"has taken "+ tname +" test and has requested billing.");
+                        jLabel28.setText(""+ pname +" has taken "+ tname +" test and has requested billing.");
+                        jLabel11.setText(""+bid);
+                    }
+                    else if (rs.getInt("Type")==1)
+                    {
+                        jLabel10.setText("Report Requsted");
+                        int bid = rs.getInt("Bill_id");
+                        ResultSet rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        Connect.sql = "SELECT * FROM bills WHERE id="+bid+";";
+                        rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        String pname = null;
+                        String tname = null;
+                        while(rs1.next()){
+                            pname = rs1.getString("Patient_Name");
+                            tname = rs1.getString("Test_Name");
+                            break;
+                        }
+                        jLabel27.setText("By "+pname+"");
+                        jLabel28.setText(""+ pname +" had taken "+ tname +" test and has requested the test report.");
+                        jLabel11.setText(""+bid);
                     }
                     break;
                 }
-                
+                int flags=0;
+                Connect.sql = "SELECT * FROM stocks;";
+                rs = Connect.stmt.executeQuery(Connect.sql);
+                while (rs.next())
+                {
+                    if (rs.getInt("Quantity")<rs.getInt("Threshold"))
+                    {
+                        flags=1;
+                        break;
+                    }
+                }
+                if (flags==1)
+                {
+                    jLabel23.setText(""+cnt+" Notifications");
+                    jLabel10.setText("Low Stocks");
+                    jLabel27.setText("Immediate Action Required");
+                    jLabel28.setText("Please check stocks, as one or more stocks have gone below threshold.");
+                }
               }
         }
         catch(SQLException e){
@@ -271,7 +308,7 @@ public class Management_home extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e)  
             {
                 try {
-                    mgfunc mgf = new mgfunc(6);
+                    mgfunc mgf = new mgfunc(7);
                     mgf.setVisible(true);
                     setVisible(false);
                 } catch (SQLException ex) {
@@ -284,7 +321,7 @@ public class Management_home extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e)  
             {
                 try {
-                    mgfunc mgf = new mgfunc(7);
+                    mgfunc mgf = new mgfunc(6);
                     mgf.setVisible(true);
                     setVisible(false);
                 } catch (SQLException ex) {
@@ -307,17 +344,94 @@ public class Management_home extends javax.swing.JFrame {
         });
     }
     
-    public Management_home(int pg) {
-        try {
-            this.ef = new empfunc();
-        } catch (SQLException ex) {
-            Logger.getLogger(Management_home.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public Management_home(int pg) throws SQLException {
+        this.ef = new empfunc();
         initComponents();
-        pgn = pg;
+        int nserial = 0;
         jPanel3.setVisible(false);
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
+        try {
+              Connect.create_Connection();
+              int cnt=0;
+              ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+              Connect.sql = "SELECT * FROM notifications";
+              rs = Connect.stmt.executeQuery(Connect.sql);
+              while(rs.next()){
+                  cnt++;
+                  //nserial = rs.getInt("id");
+              }
+              if (cnt==0)
+                jLabel23.setText("0 Notifications");
+              else
+              {
+                jLabel23.setText(""+cnt+" Notifications");
+                Connect.sql = "SELECT * FROM notifications";
+                rs = Connect.stmt.executeQuery(Connect.sql);
+                while(rs.next()){
+                    nserial = rs.getInt("id");
+                    if (rs.getInt("Type")==0)
+                    {
+                        jLabel10.setText("Bill Requsted");
+                        int bid = rs.getInt("Bill_id");
+                        ResultSet rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        Connect.sql = "SELECT * FROM bills WHERE id="+bid+";";
+                        rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        String pname = null;
+                        String tname = null;
+                        while(rs1.next()){
+                            pname = rs1.getString("Patient_Name");
+                            tname = rs1.getString("Test_Name");
+                            break;
+                        }
+                        jLabel27.setText("By "+pname+"");
+                        jLabel28.setText(""+ pname +" has taken "+ tname +" test and has requested billing.");
+                        jLabel11.setText(""+bid);
+                    }
+                    else if (rs.getInt("Type")==1)
+                    {
+                        jLabel10.setText("Report Requsted");
+                        int bid = rs.getInt("Bill_id");
+                        ResultSet rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        Connect.sql = "SELECT * FROM bills WHERE id="+bid+";";
+                        rs1 = Connect.stmt.executeQuery(Connect.sql);
+                        String pname = null;
+                        String tname = null;
+                        while(rs1.next()){
+                            pname = rs1.getString("Patient_Name");
+                            tname = rs1.getString("Test_Name");
+                            break;
+                        }
+                        jLabel27.setText("By "+pname+"");
+                        jLabel28.setText(""+ pname +" had taken "+ tname +" test and has requested the test report.");
+                        jLabel11.setText(""+bid);
+                    }
+                    break;
+                }
+                int flags=0;
+                Connect.sql = "SELECT * FROM stocks;";
+                rs = Connect.stmt.executeQuery(Connect.sql);
+                while (rs.next())
+                {
+                    if (rs.getInt("Quantity")<rs.getInt("Threshold"))
+                    {
+                        flags=1;
+                        break;
+                    }
+                }
+                if (flags==1)
+                {
+                    cnt++;
+                    jLabel23.setText(""+cnt+" Notifications");
+                    jLabel10.setText("Low Stocks");
+                    jLabel27.setText("Immediate Action Required");
+                    jLabel28.setText("Please check stocks, as one or more stocks have gone below threshold.");
+                }
+              }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -363,21 +477,6 @@ public class Management_home extends javax.swing.JFrame {
                 jPanel5.setVisible(true);
             }  
         });
-        jLabel5.addMouseListener(new MouseAdapter()  
-        {  
-            public void mouseClicked(MouseEvent e)  
-            {
-                jLabel1.setForeground(new java.awt.Color(92,100,121));
-                jLabel2.setForeground(new java.awt.Color(92,100,121));
-                jLabel6.setForeground(new java.awt.Color(92,100,121));
-                jLabel23.setForeground(new java.awt.Color(92,100,121));
-                jPanel4.setVisible(false);
-                jPanel5.setVisible(false);
-                jLabel3.setVisible(true);
-                jLabel4.setVisible(true);
-                jPanel3.setVisible(false);
-            }  
-        });
         jLabel6.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -409,7 +508,6 @@ public class Management_home extends javax.swing.JFrame {
         {  
             public void mouseClicked(MouseEvent e)  
             {
-                //empfunc ef;
                 try {
                     ef = new empfunc(2);
                 } catch (SQLException ex) {
@@ -423,8 +521,8 @@ public class Management_home extends javax.swing.JFrame {
         {  
             public void mouseClicked(MouseEvent e)  
             {
-                empfunc ef = new empfunc(3);
-                ef.setVisible(true);
+                Bill_Page bp = new Bill_Page(2);
+                bp.setVisible(true);
                 setVisible(false);
             }  
         });
@@ -525,7 +623,7 @@ public class Management_home extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e)  
             {
                 try {
-                    mgfunc mgf = new mgfunc(6);
+                    mgfunc mgf = new mgfunc(7);
                     mgf.setVisible(true);
                     setVisible(false);
                 } catch (SQLException ex) {
@@ -538,7 +636,7 @@ public class Management_home extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e)  
             {
                 try {
-                    mgfunc mgf = new mgfunc(7);
+                    mgfunc mgf = new mgfunc(6);
                     mgf.setVisible(true);
                     setVisible(false);
                 } catch (SQLException ex) {
@@ -622,6 +720,8 @@ public class Management_home extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -745,7 +845,7 @@ public class Management_home extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("Place Order");
+        jLabel19.setText("Place Order on Existing Stock");
         jLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         jPanel4.add(jLabel19);
         jLabel19.setBounds(0, 0, 480, 245);
@@ -753,7 +853,7 @@ public class Management_home extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("Cancel Order");
+        jLabel20.setText("Change Order Status");
         jLabel20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         jPanel4.add(jLabel20);
         jLabel20.setBounds(480, 0, 480, 245);
@@ -769,7 +869,7 @@ public class Management_home extends javax.swing.JFrame {
         jLabel22.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("Replenish All Stocks");
+        jLabel22.setText("Place Order for New Stocks");
         jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         jPanel4.add(jLabel22);
         jLabel22.setBounds(480, 245, 480, 245);
@@ -796,6 +896,7 @@ public class Management_home extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Previous");
+        jButton1.setOpaque(false);
         jPanel5.add(jButton1);
         jButton1.setBounds(20, 80, 450, 25);
 
@@ -804,6 +905,12 @@ public class Management_home extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Next");
         jButton2.setToolTipText("");
+        jButton2.setOpaque(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton2);
         jButton2.setBounds(490, 80, 450, 29);
 
@@ -811,6 +918,12 @@ public class Management_home extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Take Action");
+        jButton3.setOpaque(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton3);
         jButton3.setBounds(20, 430, 920, 40);
 
@@ -824,7 +937,20 @@ public class Management_home extends javax.swing.JFrame {
         jLabel28.setForeground(new java.awt.Color(204, 204, 204));
         jLabel28.setText("Lorem ipsum dolor sit amet, dico eruditi adversarium et quo. Cu quo hinc porro aliquam, dictas possim omnesque ad vix.");
         jPanel5.add(jLabel28);
-        jLabel28.setBounds(40, 260, 880, 50);
+        jLabel28.setBounds(40, 250, 880, 50);
+
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel29.setText("ID :");
+        jPanel5.add(jLabel29);
+        jLabel29.setBounds(40, 340, 800, 50);
+
+        jLabel11.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel11.setText("No.");
+        jPanel5.add(jLabel11);
+        jLabel11.setBounds(858, 340, 70, 50);
         jPanel5.add(jSeparator1);
         jSeparator1.setBounds(20, 412, 920, 10);
 
@@ -896,6 +1022,98 @@ public class Management_home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if(jLabel10.getText().equals("Bill Requsted"))
+        {
+            try {
+                int id=Integer.parseInt(jLabel11.getText());
+                Bill_Page bpg = new Bill_Page(2,""+id);
+                bpg.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Management_home.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(jLabel10.getText().equals("Report Requsted"))
+        {
+            try {
+                int id=Integer.parseInt(jLabel11.getText());
+                Report rpt = new Report(2,""+id);
+                rpt.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Management_home.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(jLabel10.getText().equals("Low Stocks"))
+        {
+            empfunc empfc = null;
+            try {
+                empfc = new empfunc(2);
+            } catch (SQLException ex) {
+                Logger.getLogger(Management_home.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            empfc.setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Connect.create_Connection();
+            String comp = "";
+            ResultSet rs = null;
+            Connect.sql = "SELECT * FROM notifications";
+            rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next()){
+                comp = comp + rs.getInt("Bill_id");
+                if (comp.equals(jLabel11.getText()))
+                    break;
+            }
+            rs.next();
+            //int nserial = rs.getInt("id");
+            if (rs.getInt("Type")==0)
+            {
+                jLabel10.setText("Bill Requsted");
+                int bid = rs.getInt("Bill_id");
+                ResultSet rs1 = Connect.stmt.executeQuery(Connect.sql);
+                Connect.sql = "SELECT * FROM bills WHERE id="+bid+";";
+                rs1 = Connect.stmt.executeQuery(Connect.sql);
+                String pname = null;
+                String tname = null;
+                while(rs1.next()){
+                    pname = rs1.getString("Patient_Name");
+                    tname = rs1.getString("Test_Name");
+                    break;
+                }
+                jLabel27.setText("By "+pname+"");
+                jLabel28.setText(""+ pname +" has taken "+ tname +" test and has requested billing.");
+                jLabel11.setText(""+bid);
+            }
+            else if (rs.getInt("Type")==1)
+            {
+                jLabel10.setText("Report Requsted");
+                int bid = rs.getInt("Bill_id");
+                ResultSet rs1 = Connect.stmt.executeQuery(Connect.sql);
+                Connect.sql = "SELECT * FROM bills WHERE id="+bid+";";
+                rs1 = Connect.stmt.executeQuery(Connect.sql);
+                String pname = null;
+                String tname = null;
+                while(rs1.next()){
+                    pname = rs1.getString("Patient_Name");
+                    tname = rs1.getString("Test_Name");
+                    break;
+                }
+                jLabel27.setText("By "+pname+"");
+                jLabel28.setText(""+ pname +" had taken "+ tname +" test and has requested the test report.");
+                jLabel11.setText(""+bid);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Management_home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -942,6 +1160,7 @@ public class Management_home extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -960,6 +1179,7 @@ public class Management_home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

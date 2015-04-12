@@ -41,10 +41,10 @@ public class Bill_Page extends javax.swing.JFrame {
         jTextField1.setText(""+bd);
         jTextField2.setText(""+rs.getString("Patient_Name"));
         jTextField4.setText(""+rs.getString("Test_Name"));
-        Connect.sql = "SELECT * FROM tests WHERE Test_Name="+ rs.getString("Test_Name") +";";
+        Connect.sql = "SELECT * FROM tests WHERE Test_Name='"+ rs.getString("Test_Name") +"';";
         rs = Connect.stmt.executeQuery(Connect.sql);
         rs.next();
-        jTextField5.setText(""+rs.getInt("TestCharges"));
+        jTextField5.setText(""+rs.getInt("Test_Charges"));
         if (ch==2)
             jButton1.setText("Confirm");
     }
@@ -336,10 +336,9 @@ public class Bill_Page extends javax.swing.JFrame {
         {
             try {
                 Connect.create_Connection();
-                Connect.sql = "INSERT INTO bills (Doctor_Name,Test_Date,Collection_date,Status) VALUES ('"+ jTextField3.getText() +"','"+ jComboBox1.getSelectedItem().toString() + "-" + jComboBox2.getSelectedItem().toString() + "-" + jComboBox3.getSelectedItem().toString() + " 00:00:01','" + jComboBox4.getSelectedItem().toString() + "-" + jComboBox5.getSelectedItem().toString() + "-" + jComboBox6.getSelectedItem().toString() + " " + jComboBox7.getSelectedItem().toString() + ":" + jComboBox2.getSelectedItem().toString() + ":00',1);";
+                Connect.sql = "UPDATE bills SET Doctor_Name='"+jTextField3.getText()+"',Test_Date='"+jComboBox1.getSelectedItem().toString() + "-" + jComboBox2.getSelectedItem().toString() + "-" + jComboBox3.getSelectedItem().toString() + " 00:00:01',Collection_date='"+ jComboBox4.getSelectedItem().toString() + "-" + jComboBox5.getSelectedItem().toString() + "-" + jComboBox6.getSelectedItem().toString() + " " + jComboBox7.getSelectedItem().toString() + ":" + jComboBox2.getSelectedItem().toString() + ":00',Status=1 WHERE id="+bd+";";
                 Connect.stmt.executeUpdate(Connect.sql);
-                Connect.stmt.close();
-                Connect.sql = "DELETE FROM notifications WHERE bid= '" + bd +";";
+                Connect.sql = "DELETE FROM notifications WHERE Bill_id= " + bd +";";
                 Connect.stmt.executeUpdate(Connect.sql);
                 Connect.stmt.close();
                 Management_home mh = null;

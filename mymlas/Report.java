@@ -5,6 +5,11 @@
  */
 package mymlas;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ghost_000
@@ -14,8 +19,38 @@ public class Report extends javax.swing.JFrame {
     /**
      * Creates new form Report
      */
+    String bd;
+    int p;
     public Report() {
         initComponents();
+    }
+    
+    public Report(int pos,String bid) throws SQLException {
+        initComponents();
+        p = pos;
+        bd = bid;
+        Connect.create_Connection(); 
+        Connect.sql = "SELECT * FROM bills WHERE id="+ bd +";";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        jTextField1.setText(rs.getString("Patient_Name"));
+        jTextField4.setText(rs.getString("Doctor_Name"));
+        jTextField5.setText(rs.getString("Test_Name"));
+        Connect.sql = "SELECT * FROM tests WHERE Test_Name='"+ rs.getString("Test_Name") +"';";
+        rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        jTextField6.setText(""+rs.getInt("Test_Charges"));
+        Connect.sql = "SELECT * FROM patients WHERE pname='"+ jTextField1.getText() +"';";
+        rs = Connect.stmt.executeQuery(Connect.sql);
+        rs.next();
+        if (rs.getInt("gender")==0)
+            jTextField2.setText("Male");
+        else if (rs.getInt("gender")==1)
+            jTextField2.setText("Female");
+        else
+            jTextField2.setText("Other");
+        if (p==2)
+            jButton1.setText("Confirm");
     }
 
     /**
@@ -32,7 +67,6 @@ public class Report extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -40,7 +74,6 @@ public class Report extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
@@ -76,15 +109,9 @@ public class Report extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Age :");
+        jLabel5.setText("Gender :");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(30, 140, 180, 30);
-
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Gender :");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(490, 140, 180, 30);
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 204));
@@ -133,15 +160,6 @@ public class Report extends javax.swing.JFrame {
         });
         jPanel1.add(jTextField2);
         jTextField2.setBounds(230, 140, 150, 30);
-
-        jTextField3.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField3);
-        jTextField3.setBounds(680, 140, 150, 30);
 
         jTextField4.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
         jPanel1.add(jTextField4);
@@ -218,10 +236,6 @@ public class Report extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
@@ -230,6 +244,37 @@ public class Report extends javax.swing.JFrame {
         /*Patient_home phm = new Patient_home(3);
         phm.setVisible(true);
         this.setVisible(false);*/
+        if (p==1)
+        {
+            try {
+                Patient_home phm = new Patient_home(3);
+                phm.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (p==2)
+        {
+            try {
+                Connect.create_Connection();
+                Connect.sql = "INSERT INTO reports (billid,results) VALUES ("+ bd +",'"+ jTextArea1.getText() + "');";
+                Connect.stmt.executeUpdate(Connect.sql);    
+                Connect.sql = "DELETE FROM notifications WHERE Bill_id= " + bd +";";
+                Connect.stmt.executeUpdate(Connect.sql);
+                Connect.stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Management_home mh = null;
+                try {
+                    mh = new Management_home();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Bill_Page.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                mh.setVisible(true);
+                this.setVisible(false);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -276,7 +321,6 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -286,7 +330,6 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;

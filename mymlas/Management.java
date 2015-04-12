@@ -8,6 +8,7 @@ package mymlas;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -68,12 +69,13 @@ public class Management {
         Connect.sql = "DELETE FROM Tests WHERE Test_Name= '" + test + "';";
         Connect.stmt.executeUpdate(Connect.sql);
         Connect.stmt.close();
+        JOptionPane.showMessageDialog(null,"Done.\n");
         //tests_.removeElement(test);
-        for (Test tests_1 : tests_) {
-            if (tests_1.get_Testname().equals(test))
-                tests_.remove(tests_1);
-        num_Tests_--;
-        }
+        for (int i=0;i<tests_.size();i++)
+            if (tests_.get(i).equals(test))
+            {    tests_.remove(i);
+                num_Tests_--;
+            }      
     }
    
     
@@ -109,6 +111,7 @@ public class Management {
         }
         Connect.sql = "UPDATE Tests SET Test_Name = '" + new_Test.get_Testname() + "',Test_Charges = " + new_Test.get_Testcharges() + " WHERE Test_Name = '" + prev_Test.get_Testname() + "' AND Test_Charges = " + prev_Test.get_Testcharges() + ";";
         Connect.stmt.executeUpdate(Connect.sql);
+        JOptionPane.showMessageDialog(null,"Done.\n");
         for(int i = 0;i < num_Tests_;i++){
             if(list_Tests(i) == prev_Test){
                 list_Tests(i).set_Testname(new_Test.get_Testname());

@@ -42,11 +42,14 @@ public class Home extends javax.swing.JFrame {
                 jPanel3.setVisible(false);
                 jPanel4.setVisible(true);
                 jTextField1.setVisible(true);
+                jTextField2.setVisible(false);
                 jLabel8.setText("Patient Name");
                 jLabel9.setVisible(false);
                 jButton2.setVisible(true);
                 jButton4.setVisible(true);
                 jButton5.setVisible(true);
+                jTextField1.setText("");
+                jTextField1.setEditable(true);
             }
         });
         jLabel5.addMouseListener(new MouseAdapter()  

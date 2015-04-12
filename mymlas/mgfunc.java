@@ -5,6 +5,7 @@
  */
 package mymlas;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,14 +58,21 @@ public class mgfunc extends javax.swing.JFrame {
         else if (optn==2)
         {
             jPanel2.setVisible(true);
-            
+            DefaultTableModel tm = (DefaultTableModel) jTable2.getModel();
+            Connect.create_Connection(); 
+            Connect.sql = "SELECT * FROM stocks;";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next())
+            {
+                tm.addRow(new Object[]{rs.getString("Stock_Name"),0});
+            }
         }
         else if (optn==3)
         {
             jPanel3.setVisible(true);
             DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
             for(int i = 0;i < Management_.get_num_tests();i++)
-                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
+                tm.addRow(new Object[] {(Management_.list_Tests(i)).get_Testname()});
             for(int i = 0;i < Management_.get_num_tests();i++){
                 jComboBox1.addItem((Management_.list_Tests(i)).get_Testname());
             }
@@ -72,17 +80,43 @@ public class mgfunc extends javax.swing.JFrame {
         else if (optn==4)
         {
             jPanel4.setVisible(true);
-            for(int i = 0;i < Management_.get_num_tests();i++){
-                jComboBox2.addItem(Management_.list_Tests(i).get_Testname());
-        }
+            DefaultTableModel tm = (DefaultTableModel) jTable4.getModel();
+            Connect.create_Connection(); 
+            Connect.sql = "SELECT * FROM stocks;";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next())
+            {
+                tm.addRow(new Object[]{rs.getString("Stock_Name"),rs.getString("Quantity")});
+            }
+            Connect.sql = "SELECT * FROM tests;";
+            rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next())
+            {
+                jComboBox2.addItem(""+rs.getString("Test_Name"));
+            }
         }
         else if (optn==5)
         {
             jPanel5.setVisible(true);
+            Connect.create_Connection();
+            Connect.sql = "SELECT * FROM stocks;";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next()){
+                jComboBox3.addItem(rs.getString("Stock_Name"));
+            }
         }
         else if (optn==6)
         {
             jPanel6.setVisible(true);
+            DefaultTableModel tm = (DefaultTableModel) jTable5.getModel();
+            tm.setRowCount(0);
+            Connect.create_Connection();
+            Connect.sql = "SELECT * FROM orders WHERE Status = 'Pending';";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next()){
+                tm.addRow(new Object[] {rs.getString("Stock_Name"),rs.getInt("Quantity")});
+                jComboBox4.addItem(rs.getString("Stock_Name"));
+            }
         }
         else if (optn==7)
         {
@@ -152,6 +186,7 @@ public class mgfunc extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jButton12 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -172,6 +207,13 @@ public class mgfunc extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jButton14 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -431,6 +473,8 @@ public class mgfunc extends javax.swing.JFrame {
         jComboBox2.setBounds(170, 250, 270, 30);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setMaximumSize(new java.awt.Dimension(960, 540));
+        jPanel5.setMinimumSize(new java.awt.Dimension(960, 540));
         jPanel5.setLayout(null);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -480,6 +524,22 @@ public class mgfunc extends javax.swing.JFrame {
         });
         jPanel5.add(jButton12);
         jButton12.setBounds(400, 480, 180, 25);
+
+        jPanel9.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 960, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 540, Short.MAX_VALUE)
+        );
+
+        jPanel5.add(jPanel9);
+        jPanel9.setBounds(0, 0, 960, 540);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(null);
@@ -590,7 +650,7 @@ public class mgfunc extends javax.swing.JFrame {
         jLabel24.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(204, 51, 0));
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Replenish All Stocks");
+        jLabel24.setText("New Stock Item");
         jPanel8.add(jLabel24);
         jLabel24.setBounds(0, 180, 960, 40);
 
@@ -602,6 +662,44 @@ public class mgfunc extends javax.swing.JFrame {
         });
         jPanel8.add(jButton11);
         jButton11.setBounds(400, 510, 180, 25);
+
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel29.setText("Stock Name");
+        jPanel8.add(jLabel29);
+        jLabel29.setBounds(40, 250, 160, 30);
+
+        jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel30.setText("Threshold");
+        jPanel8.add(jLabel30);
+        jLabel30.setBounds(40, 350, 160, 30);
+
+        jLabel31.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel31.setText("Quantity");
+        jPanel8.add(jLabel31);
+        jLabel31.setBounds(40, 300, 160, 30);
+
+        jTextField5.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jPanel8.add(jTextField5);
+        jTextField5.setBounds(230, 250, 270, 30);
+
+        jTextField6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jPanel8.add(jTextField6);
+        jTextField6.setBounds(230, 300, 270, 30);
+
+        jTextField7.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jPanel8.add(jTextField7);
+        jTextField7.setBounds(230, 350, 270, 30);
+
+        jButton14.setText("Order");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(jButton14);
+        jButton14.setBounds(400, 480, 180, 25);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -615,13 +713,13 @@ public class mgfunc extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -633,52 +731,76 @@ public class mgfunc extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Management_home mghm = new Management_home(1);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(1);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Management_home mghm = new Management_home(2);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(2);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        Management_home mghm = new Management_home(2);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(2);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -694,45 +816,52 @@ public class mgfunc extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        Management_home mghm = new Management_home(2);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(2);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        Management_home mghm = new Management_home(2);
-        mghm.setVisible(true);
-        this.setVisible(false);
+        try {
+            Management_home mghm = new Management_home(2);
+            mghm.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         try {
-          Management_.remove_Test(Test_to_remove);
-        }
-        catch (SQLException e) {
-           e.printStackTrace();
-        }
-        DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
-        for(int i = 0;i < Management_.get_num_tests();i++)
-            tm.removeRow(i);
-        for(int i = 0;i < Management_.get_num_tests();i++)
-                tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
-        jComboBox1.removeAllItems();
-        for(int i = 0;i < Management_.get_num_tests();i++)
-                jComboBox1.addItem((Management_.list_Tests(i)).get_Testname());
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {                                              
-        String indx = jComboBox1.getSelectedItem().toString();
+            String indx = jComboBox1.getSelectedItem().toString();
             Test_to_remove = indx;
-    }
-    
-    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {                                           
-        if(jComboBox2.getSelectedIndex() >= 0){
-            Test test_temp = Management_.list_Tests(jComboBox2.getSelectedIndex());
-            jTextField4.setText(String.valueOf(test_temp.get_Testcharges()));
+            try {
+                Management_.remove_Test(Test_to_remove);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
+            tm.setRowCount(0);
+            Connect.create_Connection();
+            Connect.sql = "SELECT * FROM tests;";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            while(rs.next())
+            {
+                tm.addRow(new Object[]{rs.getString("Test_Name")});
+            }
+            jComboBox1.removeAllItems();
+            for(int i = 0;i < Management_.get_num_tests();i++)
+                jComboBox1.addItem((Management_.list_Tests(i)).get_Testname());
         }
-    }
+        catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
     
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -777,14 +906,19 @@ public class mgfunc extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Enter all the fields and then press Done.\n");
             }
             else if(jTextField2.getText().matches("[0-9]*")){
+                System.out.println("OUT!");
                 try {
+                    System.out.println("IN!!!!!!!!");
                     String S = "";
-                    DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+                    DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
                     int nRow = dtm.getRowCount();
                     for (int i = 0 ; i < nRow ; i++)
                     {
+                        System.out.println(dtm.getValueAt(i,1).toString());
                         S=S.concat(dtm.getValueAt(i, 1).toString());
+                        S=S.concat(",");
                     }
+                    S=S.concat("-");
                     Test test_temp = new Test(jTextField1.getText(),Integer.parseInt(jTextField2.getText()),S);  
                     if(Management_.add_Test(test_temp)){
                         JOptionPane.showMessageDialog(null,"The test has been successfully added!!");
@@ -806,16 +940,211 @@ public class mgfunc extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
+        try {                                          
+            Stocks S = new Stocks(jComboBox3.getSelectedItem().toString(),Integer.parseInt(jTextField3.getText()),0);
+            Connect.create_Connection();
+            Connect.sql = "INSERT INTO orders (Stock_Name,Quantity,Status,Threshold) VALUES ('"+ jComboBox3.getSelectedItem().toString() +"',"+ jTextField3.getText() +",'Pending',-1);";
+            Connect.stmt.executeUpdate(Connect.sql);
+            JOptionPane.showMessageDialog(null,"Done.\n");
+            Connect.stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton12ActionPerformed
 
+      public int deleteStocks(Stocks s) throws SQLException
+    {
+        
+        //////////////////////////
+//        returns
+//                0 : insufficient stocks;
+//                1 : successful;
+//                2 : no such stocks;
+       //////////////////////////
+        
+        Connect.create_Connection();
+        Connect.sql = "SELECT * FROM Stocks WHERE Stock_Name = '" + s.get_Item_Name() + "';";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        int quantity = 0;
+        boolean flag = false,flag2 = false;
+        while(rs.next()){
+            flag2 = true;
+            quantity = rs.getInt("Quantity");
+//            if(quantity + s.get_Quantity() >= rs.getInt("Threshold")){
+//                flag = true;
+//            }
+            quantity = quantity - s.get_Quantity();
+            if(quantity < 0)
+                return 0;
+        }
+//        if(flag == true) {
+//            Connect.sql = "DELETE FROM NotifyStocks WHERE Item_Name = '" + item.get_Item_Name() + "';";
+//            Connect.stmt.executeUpdate(Connect.sql);
+//        }
+        //else 
+        if(flag2 == true) {
+             Connect.sql = "UPDATE Stocks SET Quantity = " + quantity + " WHERE Item_Name = '" + s.get_Item_Name() + "';";
+             Connect.stmt.executeUpdate(Connect.sql);
+             JOptionPane.showMessageDialog(null,"Done.\n");
+             return 1;
+        }
+//        Connect.sql = "SELECT * FROM Stocks WHERE Item_Name = '" + s.get_Item_Name() + "';";
+//        rs = Connect.stmt.executeQuery(Connect.sql);
+//        while(rs.next()){
+//            quantity = rs.getInt("Quantity") + s.get_Quantity();
+//        }
+//        Connect.sql = "UPDATE Stocks SET Quantity = " + quantity + " WHERE Item_Name = '" + item.get_Item_Name() + "';";
+//        Connect.stmt.executeUpdate(Connect.sql);
+        
+        return 2;
+    }
+    
+    public void addStocks(Stocks s) throws SQLException
+    {
+         Connect.create_Connection();
+        Connect.sql = "SELECT * FROM orders WHERE Stock_Name = '" + s.get_Item_Name() + "' AND Status = 'Pending';";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        int srno = 0;
+        while(rs.next())
+        {
+            srno = rs.getInt("id");
+        }
+        Connect.sql = "UPDATE orders SET Status = 'Received' WHERE id = " + srno + " AND Status <> 'Received';";
+        Connect.stmt.executeUpdate(Connect.sql);
+        Connect.sql = "SELECT * FROM stocks WHERE Stock_Name = '" + s.get_Item_Name() + "';";
+        System.out.println(s.get_Item_Name());
+        rs = Connect.stmt.executeQuery(Connect.sql);
+        int quantity = 0, y = 0;
+        boolean flag = false,flag2 = false;
+        while(rs.next()){
+            flag2 = true;
+            quantity = rs.getInt("Quantity");
+            y = quantity;
+            quantity = quantity + s.get_Quantity();
+            //System.out.println(quantity);
+        }
+        
+        if(flag2 == true) {
+             Connect.sql = "UPDATE stocks SET Quantity = " + quantity + " WHERE Stock_Name = '" + s.get_Item_Name() + "';";
+             Connect.stmt.executeUpdate(Connect.sql);
+             //Connect.sql = "DELETE FROM stocks WHERE Stock_Name = '" + s.get_Item_Name() + "' AND Quantity = " + y + ";";
+             JOptionPane.showMessageDialog(null,"Stocks added.\n");
+        }  
+    }
+    
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
+         Stocks S = null;
+        int f=0;
+        if (jRadioButton1.isSelected())
+        {
+            try {
+                Connect.create_Connection();
+                Connect.sql = "SELECT * FROM orders WHERE Stock_Name='"+ jComboBox4.getSelectedItem().toString() + "' AND Status = 'Pending';";
+                ResultSet rs = null;
+                rs = Connect.stmt.executeQuery(Connect.sql);
+                rs.next();
+                f=1;
+                S = new Stocks();
+                S.set_Item_Name(rs.getString("Stock_Name"));
+                S.set_Quantity(rs.getInt("Quantity"));
+                S.set_Threshold(rs.getInt("Threshold"));
+            } catch (SQLException ex) {
+                Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (f==1){
+                if (S.get_Threshold()>0)
+                {
+                    try {
+                        //System.out.println("1");
+                        newStocks(S);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                }
+                else
+                {
+                    try {
+                        //System.out.println("2");
+                        addStocks(S);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                }
+            }
+        }
+        
+        if (jRadioButton2.isSelected())
+        {
+            try {
+                Connect.create_Connection();
+                Connect.sql = "SELECT * FROM orders WHERE Stock_Name='"+ jComboBox4.getSelectedItem().toString() + "';";
+                ResultSet rs = null;
+                rs = Connect.stmt.executeQuery(Connect.sql);
+                rs.next();
+                f=1;
+                S = new Stocks();
+                S.set_Item_Name(rs.getString("Stock_Name"));
+                S.set_Quantity(rs.getInt("Quantity"));
+                S.set_Threshold(rs.getInt("Threshold"));
+            } catch (SQLException ex) {
+                Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (f==1){
+                try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM orders WHERE Stock_Name = '" + S.get_Item_Name() + "' AND Status = 'Pending';"; 
+                    ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+                    int srno = 0;
+                    while(rs.next())
+                    {
+                        srno = rs.getInt("id");
+                    }
+                    Connect.sql = "UPDATE orders SET Status = 'Cancelled' WHERE id = " + srno + ";";
+                    Connect.stmt.executeUpdate(Connect.sql);
+                    JOptionPane.showMessageDialog(null,"Order cancelled.\n");
+                } catch (SQLException ex) {
+                    Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    public void newStocks(Stocks s) throws SQLException
+    {
+        Connect.create_Connection();
+        Connect.sql = "SELECT * FROM orders WHERE Stock_Name = '" + s.get_Item_Name() + "' AND Status = 'Pending';";
+        ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+        int srno = 0;
+        while(rs.next())
+        {
+            srno = rs.getInt("id");
+        }
+        Connect.sql = "UPDATE orders SET Status = 'Received' WHERE id = " + srno + " AND Status <> 'Received';";
+        Connect.stmt.executeUpdate(Connect.sql);
+        
+        Connect.sql = "INSERT INTO stocks (Stock_Name,Quantity,Threshold) VALUES ('"+ s.get_Item_Name() + "'," + s.get_Quantity() + ","+ s.get_Threshold() + ");";
+        Connect.stmt.executeUpdate(Connect.sql);
+         
+        JOptionPane.showMessageDialog(null,"Stocks added.\n");
+    }
+    
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        try {
+            Stocks S;
+            Connect.create_Connection();
+            Connect.sql = "INSERT INTO orders (Stock_Name,Quantity,Status,Threshold) VALUES ('"+ jTextField5.getText() +"',"+ jTextField6.getText() +",'Pending',"+ jTextField7.getText() +");";
+            Connect.stmt.executeUpdate(Connect.sql);
+            JOptionPane.showMessageDialog(null,"Done.\n");
+            Connect.stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton14ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -864,6 +1193,7 @@ public class mgfunc extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -897,7 +1227,10 @@ public class mgfunc extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -912,6 +1245,7 @@ public class mgfunc extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -928,5 +1262,8 @@ public class mgfunc extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }
