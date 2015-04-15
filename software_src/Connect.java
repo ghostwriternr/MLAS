@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 public class Connect {
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/mymlas";
-   static final String USER = "ghost";
-   static final String PASS = "naresh95";
+   static final String USER = "root";
+   static final String PASS = "user12";
    static String sql = null;
    static Connection conn = null;
    static Statement stmt = null;
