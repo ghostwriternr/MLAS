@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -323,6 +324,10 @@ public class empfunc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jTextField1.getText().equals(""))
+            JOptionPane.showMessageDialog(null,"Enter a valid patient name\n");
+        else
+        {
         try {
               Connect.create_Connection();
               int cnt=0,g;
@@ -348,6 +353,7 @@ public class empfunc extends javax.swing.JFrame {
             this.setVisible(false);
         } catch (SQLException ex) {
             Logger.getLogger(empfunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

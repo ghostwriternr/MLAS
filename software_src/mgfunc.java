@@ -86,7 +86,7 @@ public class mgfunc extends javax.swing.JFrame {
             ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
             while(rs.next())
             {
-                tm.addRow(new Object[]{rs.getString("Stock_Name"),rs.getString("Quantity")});
+                tm.addRow(new Object[]{rs.getString("Stock_Name"),"0"});
             }
             Connect.sql = "SELECT * FROM tests;";
             rs = Connect.stmt.executeQuery(Connect.sql);
@@ -881,7 +881,9 @@ public class mgfunc extends javax.swing.JFrame {
             for (int i = 0 ; i < nRow ; i++)
             {
                 S=S.concat(dtm.getValueAt(i, 1).toString());
+                S=S.concat(",");
             }
+            S=S.concat("-");
             Test prev_test = Management_.list_Tests(jComboBox2.getSelectedIndex());
             Test new_test  = new Test(prev_test.get_Testname(),Integer.parseInt(jTextField4.getText()),S);
             try {
@@ -899,6 +901,41 @@ public class mgfunc extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
+        /*if(jTextField1.getText().equals("") || jTextField2.getText().equals("")) {
+                JOptionPane.showMessageDialog(null,"Enter all the fields and then press Done.\n");
+            }
+            else if(jTextField2.getText().matches("[0-9]*")){
+                System.out.println("OUT!");
+                try {
+                    System.out.println("IN!!!!!!!!");
+                    String S = "";
+                    DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+                    int nRow = dtm.getRowCount();
+                    for (int i = 0 ; i < nRow ; i++)
+                    {
+                        System.out.println(dtm.getValueAt(i,1).toString());
+                        S=S.concat(dtm.getValueAt(i, 1).toString());
+                        S=S.concat(",");
+                    }
+                    S=S.concat("-");
+                    Test test_temp = new Test(jTextField1.getText(),Integer.parseInt(jTextField2.getText()),S);  
+                    if(Management_.add_Test(test_temp)){
+                        JOptionPane.showMessageDialog(null,"The test has been successfully added!!");
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,"Sorry the test already exists!!");
+                    }
+                jTextField1.setText("");
+                jTextField2.setText("");
+                //AddTest.dispose();
+                }
+                catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(null,"Test Charges can only consist of numbers.");
+            }*/
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -1137,10 +1174,24 @@ public class mgfunc extends javax.swing.JFrame {
         try {
             Stocks S;
             Connect.create_Connection();
-            Connect.sql = "INSERT INTO orders (Stock_Name,Quantity,Status,Threshold) VALUES ('"+ jTextField5.getText() +"',"+ jTextField6.getText() +",'Pending',"+ jTextField7.getText() +");";
-            Connect.stmt.executeUpdate(Connect.sql);
-            JOptionPane.showMessageDialog(null,"Done.\n");
-            Connect.stmt.close();
+            Connect.sql = "SELECT * FROM stocks WHERE Stock_Name = '" + jTextField5.getText() + "';";
+            ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+            boolean flag = false,flag2 = false;
+            while(rs.next()){
+                
+                flag2 = true;
+            }
+
+            if(flag2 == true) {
+                 JOptionPane.showMessageDialog(null,"Stock already exists.\n");
+            }  
+            else
+            {
+                Connect.sql = "INSERT INTO orders (Stock_Name,Quantity,Status,Threshold) VALUES ('"+ jTextField5.getText() +"',"+ jTextField6.getText() +",'Pending',"+ jTextField7.getText() +");";
+                Connect.stmt.executeUpdate(Connect.sql);
+                JOptionPane.showMessageDialog(null,"Done.\n");
+                Connect.stmt.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(mgfunc.class.getName()).log(Level.SEVERE, null, ex);
         }

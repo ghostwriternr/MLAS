@@ -61,7 +61,7 @@ public class Patient_home extends javax.swing.JFrame {
                 tm.addRow(new Object[] {i + 1,(Management_.list_Tests(i)).get_Testname(),(Management_.list_Tests(i)).get_Testcharges()});
                 jComboBox1.addItem(Management_.list_Tests(i).get_Testname());
             }
-        jLabel33.addMouseListener(new MouseAdapter()  
+        /*jLabel33.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
             {
@@ -108,7 +108,7 @@ public class Patient_home extends javax.swing.JFrame {
                     Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }  
-        });
+        });*/
         jLabel1.addMouseListener(new MouseAdapter()  
         {  
             public void mouseClicked(MouseEvent e)  
@@ -552,8 +552,8 @@ public class Patient_home extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -876,21 +876,31 @@ public class Patient_home extends javax.swing.JFrame {
 
         jPanel6.setLayout(null);
 
-        jLabel33.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel33.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel33.setText("Bills");
-        jLabel33.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
-        jPanel6.add(jLabel33);
-        jLabel33.setBounds(0, 0, 480, 430);
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
+        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Bills");
+        jButton2.setOpaque(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton2);
+        jButton2.setBounds(0, 0, 480, 430);
 
-        jLabel34.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel34.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel34.setText("Reports");
-        jLabel34.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
-        jPanel6.add(jLabel34);
-        jLabel34.setBounds(480, 0, 480, 430);
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Reports");
+        jButton3.setOpaque(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton3);
+        jButton3.setBounds(479, 0, 480, 430);
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mymlas/moss_blur.jpg"))); // NOI18N
         jPanel6.add(jLabel19);
@@ -1262,6 +1272,49 @@ public class Patient_home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Vector v = new Vector();
+                try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM bills WHERE Patient_Name='"+ jLabel27.getText() +"';";
+                    ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+                    while(rs.next())
+                    {
+                        v.add(rs.getInt("id"));
+                    }
+                    for (int i=0;i<v.size();i++)
+                    {
+                        Connect.sql = "SELECT * FROM reports WHERE billid="+ v.get(i) +";";
+                        rs = Connect.stmt.executeQuery(Connect.sql);
+                        while(rs.next())
+                        {
+                            Report rp = new Report(1,""+v.get(i));
+                            rp.setVisible(true);
+                            setVisible(false);
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM bills WHERE Patient_Name='"+ jLabel27.getText() +"';";
+                    ResultSet rs = Connect.stmt.executeQuery(Connect.sql);
+                    while(rs.next())
+                    {
+                        Bill_Page bp = new Bill_Page(1,""+rs.getInt("id"));
+                        bp.setVisible(true);
+                        setVisible(false);
+                        break;
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1304,6 +1357,8 @@ public class Patient_home extends javax.swing.JFrame {
     public Management Management_;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
@@ -1333,8 +1388,6 @@ public class Patient_home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

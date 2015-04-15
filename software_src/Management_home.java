@@ -37,6 +37,15 @@ public class Management_home extends javax.swing.JFrame {
         jPanel3.setVisible(false);
         jPanel4.setVisible(false);
         jPanel5.setVisible(false);
+        jLabel30.setVisible(false);
+        jButton1.setVisible(true);
+        jButton2.setVisible(true);
+        jButton3.setVisible(true);
+        jLabel27.setVisible(true);
+        jLabel28.setVisible(true);
+        jLabel29.setVisible(true);
+        jLabel11.setVisible(true);
+        jLabel10.setVisible(true);
         try {
               Connect.create_Connection();
               int cnt=0;
@@ -48,7 +57,18 @@ public class Management_home extends javax.swing.JFrame {
                   //nserial = rs.getInt("id");
               }
               if (cnt==0)
-                jLabel23.setText("0 Notifications");
+              { 
+                  jLabel23.setText("0 Notifications");
+                  jLabel30.setVisible(true);
+                  jButton1.setVisible(false);
+                  jButton2.setVisible(false);
+                  jButton3.setVisible(false);
+                  jLabel27.setVisible(false);
+                  jLabel28.setVisible(false);
+                  jLabel29.setVisible(false);
+                  jLabel11.setVisible(false);
+                  jLabel10.setVisible(false);
+              }
               else
               {
                 jLabel23.setText(""+cnt+" Notifications");
@@ -715,6 +735,7 @@ public class Management_home extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jLabel30 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -891,6 +912,13 @@ public class Management_home extends javax.swing.JFrame {
         jLabel23.setBounds(480, 510, 240, 30);
 
         jPanel5.setLayout(null);
+
+        jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel30.setText("NO NEW NOTIFICATIONS");
+        jPanel5.add(jLabel30);
+        jLabel30.setBounds(0, 60, 960, 430);
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -1181,6 +1209,7 @@ public class Management_home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

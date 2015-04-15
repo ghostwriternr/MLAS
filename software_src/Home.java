@@ -289,8 +289,13 @@ public class Home extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.setVisible(false);
-            mhm.setVisible(true);
+            if (!(jTextField2.getText().equals("management")))
+                JOptionPane.showMessageDialog(null,"Incorrect Password\n");
+            else
+            {
+                this.setVisible(false);
+                mhm.setVisible(true);
+            }
         }
         else
         {

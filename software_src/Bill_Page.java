@@ -47,6 +47,42 @@ public class Bill_Page extends javax.swing.JFrame {
         jTextField5.setText(""+rs.getInt("Test_Charges"));
         if (ch==2)
             jButton1.setText("Confirm");
+        else if (ch==1)
+        {
+            try {
+                    Connect.create_Connection();
+                    Connect.sql = "SELECT * FROM bills WHERE Patient_Name='"+ jTextField2.getText() +"';";
+                    rs = Connect.stmt.executeQuery(Connect.sql);
+                    while(rs.next())
+                    {
+                        jTextField3.setText(rs.getString("Doctor_Name"));
+                        jTextField6.setText(rs.getString("Test_Date"));
+                        jTextField7.setText(rs.getString("Collection_Date"));
+                        jTextField1.setEditable(false);
+                        jTextField2.setEditable(false);
+                        jTextField3.setEditable(false);
+                        jTextField4.setEditable(false);
+                        jTextField5.setEditable(false);
+                        jTextField6.setEditable(false);
+                        jTextField7.setEditable(false);
+                        jTextField8.setEditable(false);
+                        jComboBox1.setVisible(false);
+                        jComboBox2.setVisible(false);
+                        jComboBox3.setVisible(false);
+                        jComboBox4.setVisible(false);
+                        jComboBox5.setVisible(false);
+                        jComboBox6.setVisible(false);
+                        jComboBox7.setVisible(false);
+                        jComboBox8.setVisible(false);
+                        jLabel10.setVisible(false);
+                        jTextField8.setVisible(false);
+                        jLabel12.setVisible(false);
+                        jLabel13.setVisible(false);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Patient_home.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        }
     }
 
     /**
@@ -83,6 +119,9 @@ public class Bill_Page extends javax.swing.JFrame {
         jComboBox6 = new javax.swing.JComboBox();
         jComboBox7 = new javax.swing.JComboBox();
         jComboBox8 = new javax.swing.JComboBox();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -226,6 +265,12 @@ public class Bill_Page extends javax.swing.JFrame {
         jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "10", "20", "30", "40", "50" }));
         jPanel1.add(jComboBox8);
         jComboBox8.setBounds(440, 430, 41, 22);
+        jPanel1.add(jTextField6);
+        jTextField6.setBounds(330, 350, 300, 22);
+        jPanel1.add(jTextField7);
+        jTextField7.setBounds(330, 390, 300, 22);
+        jPanel1.add(jTextField8);
+        jTextField8.setBounds(330, 430, 300, 22);
 
         jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -427,5 +472,8 @@ public class Bill_Page extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 }

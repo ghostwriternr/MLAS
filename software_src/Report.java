@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,6 +52,20 @@ public class Report extends javax.swing.JFrame {
             jTextField2.setText("Other");
         if (p==2)
             jButton1.setText("Confirm");
+        else if (p==1)
+        {
+            Connect.create_Connection(); 
+            Connect.sql = "SELECT * FROM reports WHERE billid="+ bd +";";
+            rs = Connect.stmt.executeQuery(Connect.sql);
+            rs.next();
+            jTextArea1.setText(rs.getString("results"));
+            jTextField1.setEditable(false);
+            jTextField2.setEditable(false);
+            jTextField4.setEditable(false);
+            jTextField5.setEditable(false);
+            jTextField6.setEditable(false);
+            jTextArea1.setEditable(false);
+        }
     }
 
     /**
@@ -256,6 +271,10 @@ public class Report extends javax.swing.JFrame {
         }
         else if (p==2)
         {
+            if (jTextArea1.getText().equals(""))
+                JOptionPane.showMessageDialog(null,"Patient Results not yet added.\n");
+            else
+            {
             try {
                 Connect.create_Connection();
                 Connect.sql = "INSERT INTO reports (billid,results) VALUES ("+ bd +",'"+ jTextArea1.getText() + "');";
@@ -274,6 +293,7 @@ public class Report extends javax.swing.JFrame {
                 }
                 mh.setVisible(true);
                 this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

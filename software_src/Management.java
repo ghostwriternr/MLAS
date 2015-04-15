@@ -109,7 +109,7 @@ public class Management {
                 return flag1;
             }
         }
-        Connect.sql = "UPDATE Tests SET Test_Name = '" + new_Test.get_Testname() + "',Test_Charges = " + new_Test.get_Testcharges() + " WHERE Test_Name = '" + prev_Test.get_Testname() + "' AND Test_Charges = " + prev_Test.get_Testcharges() + ";";
+        Connect.sql = "UPDATE Tests SET Test_Name = '" + new_Test.get_Testname() + "',Test_Charges = " + new_Test.get_Testcharges() + " , Stocks = '" + new_Test.stockReq + "' WHERE Test_Name = '" + prev_Test.get_Testname() + "' AND Test_Charges = " + prev_Test.get_Testcharges() + ";";
         Connect.stmt.executeUpdate(Connect.sql);
         JOptionPane.showMessageDialog(null,"Done.\n");
         for(int i = 0;i < num_Tests_;i++){
